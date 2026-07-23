@@ -1,66 +1,324 @@
+"use client";
+
 import Image from "next/image";
-import styles from "./page.module.css";
+import Link from "next/link";
+import { ArrowRight, CheckCircle, ChevronRight, Play } from "lucide-react";
+import { motion } from "framer-motion";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="bg-cream min-h-screen">
+      {/* 1. Hero Banner */}
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image 
+            src="/hero.png" 
+            alt="Cinematic architecture space" 
+            fill 
+            priority
+            className="object-cover scale-105 motion-safe:animate-[pulse_10s_ease-in-out_infinite]"
+          />
+          <div className="absolute inset-0 bg-charcoal/40 mix-blend-multiply"></div>
+          {/* Subtle gradient overlay to ensure text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent"></div>
         </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        <div className="container-custom relative z-10 px-6 md:px-12 lg:px-24 mt-20">
+          <motion.div 
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+            className="max-w-4xl"
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <motion.h1 
+              variants={fadeUp}
+              className="text-4xl md:text-6xl lg:text-7xl font-heading text-ivory leading-[1.1] mb-6"
+            >
+              Crafted by many hands,<br/>perfected with one vision.
+            </motion.h1>
+            <motion.p 
+              variants={fadeUp}
+              className="text-lg md:text-xl text-sand/90 font-light max-w-2xl mb-12 leading-relaxed"
+            >
+              We transform complex visions into architectural landmarks. Based in Kerala, KVH Foinster is a premier multidisciplinary firm merging traditional aesthetics with international engineering standards.
+            </motion.p>
+            
+            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-16">
+              <Link href="/projects" className="group flex items-center justify-center bg-ivory text-charcoal px-8 py-4 text-sm uppercase tracking-widest hover:bg-transparent hover:text-ivory border border-ivory transition-all duration-300 rounded-sm">
+                View Projects
+                <ChevronRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link href="/contact" className="group flex items-center justify-center bg-transparent text-ivory px-8 py-4 text-sm uppercase tracking-widest border border-transparent hover:border-ivory transition-all duration-300 rounded-sm">
+                Start a Consultation
+              </Link>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 text-xs tracking-widest text-sand uppercase">
+              <span>15+ Years Experience</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-burgundy"></span>
+              <span>200+ Projects</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-burgundy"></span>
+              <span>Global Reach</span>
+            </motion.div>
+          </motion.div>
         </div>
-      </main>
+      </section>
+
+      {/* 2. About Foinster */}
+      <section className="section-padding bg-ivory relative">
+        {/* Decorative background shape */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-sand/30 rounded-bl-[100px] z-0 hidden lg:block"></div>
+        
+        <div className="container-custom relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={staggerContainer}
+            >
+              <motion.div variants={fadeUp} className="flex items-center gap-4 mb-6">
+                <span className="w-12 h-[1px] bg-burgundy"></span>
+                <h4 className="text-sm uppercase tracking-widest text-burgundy font-medium">About Us</h4>
+              </motion.div>
+              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal mb-8 leading-tight">
+                Transforming complex visions into architectural landmarks.
+              </motion.h2>
+              <motion.div variants={fadeUp} className="space-y-6 text-charcoal/70 font-light leading-relaxed">
+                <p>
+                  Guided by a decade of architectural excellence, KVH Foinster is driven by a steadfast commitment to quality and innovation. Under the visionary leadership of our CEO, Mr. Khaja Hussain, we deliver projects that stand the test of time.
+                </p>
+                <p>
+                  From intimate private residences to grand commercial landmarks, his expertise ensures that every project is delivered with technical perfection and a deep respect for local heritage, elevating the lifestyle of our clients.
+                </p>
+              </motion.div>
+              <motion.div variants={fadeUp} className="mt-10">
+                <Link href="/about" className="inline-block border-b border-charcoal pb-1 text-sm uppercase tracking-widest hover:text-primary hover:border-primary transition-colors duration-300">
+                  Discover Our Story
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="relative aspect-[4/5] w-full rounded-tr-[80px] rounded-bl-[80px] overflow-hidden shadow-premium">
+                <Image src="/interior.png" alt="Elegant Interior" fill className="object-cover" />
+              </div>
+              <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-cream p-8 md:p-12 shadow-premium rounded-tl-[40px] rounded-br-[40px] max-w-[280px]">
+                <h3 className="font-heading text-xl text-charcoal mb-3">Our Vision</h3>
+                <p className="text-sm text-charcoal/70 font-light">To redefine modern living through timeless design.</p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Featured Projects */}
+      <section className="section-padding bg-cream">
+        <div className="container-custom">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <motion.div 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={staggerContainer}
+              className="max-w-2xl"
+            >
+              <motion.div variants={fadeUp} className="flex items-center gap-4 mb-4">
+                <span className="w-12 h-[1px] bg-burgundy"></span>
+                <h4 className="text-sm uppercase tracking-widest text-burgundy font-medium">Portfolio</h4>
+              </motion.div>
+              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal leading-tight">
+                Featured Projects
+              </motion.h2>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Link href="/projects" className="group flex items-center text-sm uppercase tracking-widest text-charcoal hover:text-primary transition-colors">
+                View All Projects <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+            {[
+              { img: "/residential.png", cat: "Residential", year: "Villas", title: "Modern & Traditional Villas", desc: "Intelligent designs tailored to Kerala's tropical environment, enhancing value and functionality." },
+              { img: "/commercial.png", cat: "Commercial", year: "Multi-story", title: "Contemporary Developments", desc: "Mastering the art of space for commercial hubs, ensuring technical perfection." },
+              { img: "/hero.png", cat: "Convention Centers", year: "Grand", title: "Elevations & Hall Layouts", desc: "Creating spaces that prioritize the comfort and flow of the people using them." },
+              { img: "/interior.png", cat: "Premium Interiors", year: "Bespoke", title: "Residential & Commercial", desc: "Curating luxurious, functional indoor spaces tailored to your lifestyle." }
+            ].map((project, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: idx * 0.2 }}
+                viewport={{ once: true }}
+                className="group cursor-pointer"
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm mb-6">
+                  <Image src={project.img} alt={project.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-charcoal/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                </div>
+                <div className="flex items-center gap-3 text-xs tracking-widest text-charcoal/50 uppercase mb-3">
+                  <span>{project.cat}</span>
+                  <span className="w-1 h-1 rounded-full bg-burgundy"></span>
+                  <span>{project.year}</span>
+                </div>
+                <h3 className="text-2xl font-heading text-charcoal mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
+                <p className="text-charcoal/70 font-light leading-relaxed">{project.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Core Services */}
+      <section className="section-padding bg-chocolate text-ivory relative overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-burgundy rounded-full blur-[120px] opacity-20"></div>
+        
+        <div className="container-custom relative z-10">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16 md:mb-24"
+          >
+            <motion.div variants={fadeUp} className="flex items-center justify-center gap-4 mb-4">
+              <span className="w-8 h-[1px] bg-sand/50"></span>
+              <h4 className="text-sm uppercase tracking-widest text-sand font-medium">Capabilities</h4>
+              <span className="w-8 h-[1px] bg-sand/50"></span>
+            </motion.div>
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading leading-tight">
+              Our Expertise
+            </motion.h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { title: "Architectural Design", desc: "Concept development for homes, apartments, and commercial hubs with 3D visualizations." },
+              { title: "Turnkey Civil Construction", desc: "Full-scale project execution with expert supervision, ensuring on-time delivery." },
+              { title: "Interior Design & Execution", desc: "Bespoke interiors for luxury and functionality, defining the inner space." },
+              { title: "Renovation & Retrofitting", desc: "Revitalizing and modernizing older structures to breathe new life." }
+            ].map((service, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-charcoal/40 border border-white/5 p-10 rounded-tr-[30px] rounded-bl-[30px] hover:bg-burgundy/20 transition-colors duration-500 group"
+              >
+                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-sand/10 text-sand mb-8 group-hover:scale-110 transition-transform duration-300">
+                  <CheckCircle size={20} strokeWidth={1.5} />
+                </div>
+                <h3 className="text-xl font-heading mb-4">{service.title}</h3>
+                <p className="text-sand/70 font-light text-sm leading-relaxed">{service.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Client Testimonials */}
+      <section className="section-padding bg-sand/20">
+        <div className="container-custom max-w-5xl">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center mb-16"
+          >
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal">
+              Client Perspectives
+            </motion.h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+            {[
+              { quote: "Foinster Arch completely elevated our home. The attention to detail and calm aesthetic changed how we live.", name: "Sarah Jenkins", role: "Private Residence" },
+              { quote: "Professional, transparent, and visually extraordinary. Their turnkey solution made our project effortless.", name: "Ahmed", role: "Commercial Plaza" }
+            ].map((testimonial, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: idx * 0.2 }}
+                viewport={{ once: true }}
+                className="bg-cream p-10 shadow-premium rounded-sm"
+              >
+                <p className="text-lg md:text-xl font-heading text-charcoal leading-relaxed mb-8 italic">
+                  "{testimonial.quote}"
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-[1px] bg-burgundy"></div>
+                  <div>
+                    <strong className="block text-sm uppercase tracking-wider text-charcoal">{testimonial.name}</strong>
+                    <span className="text-xs text-charcoal/60 uppercase tracking-widest">{testimonial.role}</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Contact & CTA */}
+      <section className="section-padding bg-ivory">
+        <div className="container-custom max-w-4xl">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={staggerContainer}
+            className="text-center bg-cream p-12 md:p-20 rounded-[40px] shadow-premium relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-32 h-32 bg-stone/20 rounded-br-full"></div>
+            <div className="absolute bottom-0 right-0 w-40 h-40 bg-sand/30 rounded-tl-full"></div>
+            
+            <div className="relative z-10">
+              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal mb-6">
+                Ready to transform your space?
+              </motion.h2>
+              <motion.p variants={fadeUp} className="text-charcoal/70 font-light mb-12 max-w-xl mx-auto">
+                Schedule a consultation with our lead architects to discuss your vision, requirements, and how we can bring your next project to life.
+              </motion.p>
+              <motion.div variants={fadeUp} className="flex flex-col sm:flex-row justify-center items-center gap-6">
+                <Link href="/contact" className="w-full sm:w-auto bg-primary text-ivory px-10 py-4 text-sm uppercase tracking-widest hover:bg-charcoal transition-colors duration-300 rounded-sm shadow-lg">
+                  Contact Us
+                </Link>
+                <a href="https://wa.me/917560870124" target="_blank" rel="noreferrer" className="w-full sm:w-auto bg-transparent border border-charcoal text-charcoal px-10 py-4 text-sm uppercase tracking-widest hover:bg-charcoal hover:text-ivory transition-colors duration-300 rounded-sm">
+                  WhatsApp Us
+                </a>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }
