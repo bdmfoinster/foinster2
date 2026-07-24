@@ -59,7 +59,7 @@ export default function FAQPage() {
       {/* Hero Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-20 text-center">
         <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.2 } } }} className="max-w-4xl mx-auto">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             Frequently Asked Questions
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -79,7 +79,7 @@ export default function FAQPage() {
             variants={fadeUp}
             className="mb-16"
           >
-            <h2 className="text-2xl font-heading text-primary border-b border-sand pb-4 mb-6">{group.category}</h2>
+            <h2 className="text-h3 text-primary border-b border-sand pb-4 mb-6">{group.category}</h2>
             
             <div className="space-y-4">
               {group.items.map((item, itemIdx) => {
@@ -92,7 +92,7 @@ export default function FAQPage() {
                       onClick={() => toggleFAQ(uniqueIndex)}
                       className="w-full flex items-center justify-between p-6 text-left hover:bg-sand/20 transition-colors"
                     >
-                      <span className="text-lg font-heading text-charcoal pr-8">{item.q}</span>
+                      <span className="text-card-title text-charcoal pr-8">{item.q}</span>
                       <div className="text-burgundy flex-shrink-0">
                         {isOpen ? <Minus size={20} /> : <Plus size={20} />}
                       </div>

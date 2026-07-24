@@ -28,6 +28,29 @@
 }
 
 @layer components {
+  /* Typography Scale */
+  .text-hero {
+    @apply text-6xl xl:text-7xl font-semibold tracking-[-0.04em] leading-[0.95] font-heading;
+  }
+  .text-h1 {
+    @apply text-5xl font-semibold tracking-[-0.02em] leading-tight font-heading;
+  }
+  .text-h2 {
+    @apply text-4xl font-semibold tracking-[-0.01em] leading-tight font-heading;
+  }
+  .text-h3 {
+    @apply text-3xl font-medium tracking-tight leading-snug font-heading;
+  }
+  .text-h4 {
+    @apply text-2xl font-medium tracking-tight leading-snug font-heading;
+  }
+  .text-card-title {
+    @apply text-xl font-medium tracking-tight leading-snug font-heading;
+  }
+  .text-small-heading {
+    @apply text-lg font-medium tracking-tight leading-snug font-heading;
+  }
+
   /* Legacy buttons in case they are used before refactoring */
   .btn-primary {
     @apply inline-block bg-primary text-white px-8 py-3 text-sm uppercase tracking-wider border border-primary transition-all duration-300 hover:bg-transparent hover:text-primary rounded-md;

@@ -61,6 +61,50 @@ const projects = [
     keyFeatures: ["Custom Lighting", "Premium Finishes", "Ergonomic Layouts"],
     constructionType: "Interior Execution",
     relatedServices: ["Interior Design & Execution"]
+  },
+  {
+    id: 5,
+    title: "Luxury Hillside Villa",
+    category: "Residential",
+    description: "Intelligent designs tailored to Kerala's tropical environment.",
+    image: "/residential.png",
+    designStyle: "Contemporary Kerala",
+    keyFeatures: ["Climate-Adaptive", "Natural Light Optimization"],
+    constructionType: "Turnkey Civil Construction",
+    relatedServices: ["Architectural Design", "Turnkey Construction"]
+  },
+  {
+    id: 6,
+    title: "Meridian HQ Plaza",
+    category: "Commercial",
+    description: "Contemporary multi-story developments engineered for optimal footfall.",
+    image: "/commercial.png",
+    designStyle: "Modern Commercial",
+    keyFeatures: ["Maximized Floor Area", "Premium Facade"],
+    constructionType: "Commercial Execution",
+    relatedServices: ["Architectural Design"]
+  },
+  {
+    id: 7,
+    title: "Emerald Convention Center",
+    category: "Convention Centers",
+    description: "Grand elevations and massive hall layouts prioritizing flow.",
+    image: "/hero.png",
+    designStyle: "Monumental Architecture",
+    keyFeatures: ["Column-Free Halls", "Acoustic Treatment"],
+    constructionType: "Large Scale Turnkey",
+    relatedServices: ["Architectural Design"]
+  },
+  {
+    id: 8,
+    title: "Executive Office Suite",
+    category: "Premium Interiors",
+    description: "Creating spaces that inspire through bespoke material selection.",
+    image: "/interior.png",
+    designStyle: "Luxury Bespoke",
+    keyFeatures: ["Custom Lighting", "Premium Finishes"],
+    constructionType: "Interior Execution",
+    relatedServices: ["Interior Design & Execution"]
   }
 ];
 
@@ -78,7 +122,7 @@ export default function ProjectsPage() {
       {/* Hero Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-16 text-center">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             Selected Works
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -108,7 +152,7 @@ export default function ProjectsPage() {
 
       {/* Projects Grid */}
       <section className="container-custom px-6 md:px-12 lg:px-24">
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <AnimatePresence>
             {filteredProjects.map((project) => (
               <motion.div
@@ -118,39 +162,23 @@ export default function ProjectsPage() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.5 }}
-                className="group cursor-pointer bg-ivory shadow-premium rounded-sm overflow-hidden flex flex-col"
+                className="group cursor-pointer relative overflow-hidden rounded-sm shadow-premium aspect-[4/3] w-full"
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <Image 
-                    src={project.image} 
-                    alt={project.title} 
-                    fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-105" 
-                  />
-                  <div className="absolute inset-0 bg-charcoal/10 group-hover:bg-transparent transition-colors duration-500"></div>
-                  <div className="absolute top-4 left-4 bg-cream/90 backdrop-blur-sm px-4 py-2 text-xs uppercase tracking-widest text-burgundy rounded-sm shadow-sm">
-                    {project.category}
-                  </div>
-                </div>
+                <Image 
+                  src={project.image} 
+                  alt={project.title} 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
                 
-                <div className="p-8 flex-grow flex flex-col">
-                  <h3 className="text-3xl font-heading text-charcoal mb-4 group-hover:text-primary transition-colors">
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                  <span className="text-[10px] uppercase tracking-widest text-primary mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                    {project.category}
+                  </span>
+                  <h3 className="text-card-title text-ivory transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
                     {project.title}
                   </h3>
-                  <p className="text-charcoal/70 font-light leading-relaxed mb-8 flex-grow">
-                    {project.description}
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4 text-xs font-light tracking-wide text-charcoal/60 uppercase border-t border-sand pt-6 mt-auto">
-                    <div>
-                      <strong className="block text-primary mb-1">Design Style</strong>
-                      {project.designStyle}
-                    </div>
-                    <div>
-                      <strong className="block text-primary mb-1">Construction Type</strong>
-                      {project.constructionType}
-                    </div>
-                  </div>
                 </div>
               </motion.div>
             ))}
@@ -161,7 +189,7 @@ export default function ProjectsPage() {
       {/* CTA */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mt-32 text-center">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} className="bg-chocolate text-ivory p-16 rounded-[40px] shadow-premium">
-          <h2 className="text-4xl font-heading mb-6">Have a project in mind?</h2>
+          <h2 className="text-h2 mb-6">Have a project in mind?</h2>
           <Link href="/contact" className="inline-block bg-primary text-ivory px-10 py-4 text-sm uppercase tracking-widest hover:bg-cream hover:text-charcoal transition-colors duration-300 rounded-sm">
             Discuss Your Vision
           </Link>

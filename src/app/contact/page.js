@@ -19,7 +19,7 @@ export default function ContactPage() {
       {/* Hero Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-20 text-center">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             Let's Talk
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -35,7 +35,7 @@ export default function ContactPage() {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} className="space-y-12">
             
             <motion.div variants={fadeUp}>
-              <h3 className="text-2xl font-heading text-primary border-b border-sand pb-3 mb-6">Head Office</h3>
+              <h3 className="text-h4 text-primary border-b border-sand pb-3 mb-6">Head Office</h3>
               <div className="flex items-start gap-4">
                 <MapPin size={24} className="text-burgundy flex-shrink-0 mt-1" strokeWidth={1.5} />
                 <p className="text-charcoal/70 font-light leading-relaxed">
@@ -47,7 +47,7 @@ export default function ContactPage() {
             </motion.div>
 
             <motion.div variants={fadeUp}>
-              <h3 className="text-2xl font-heading text-primary border-b border-sand pb-3 mb-6">Corporate Office</h3>
+              <h3 className="text-h4 text-primary border-b border-sand pb-3 mb-6">Corporate Office</h3>
               <div className="flex items-start gap-4">
                 <MapPin size={24} className="text-burgundy flex-shrink-0 mt-1" strokeWidth={1.5} />
                 <p className="text-charcoal/70 font-light leading-relaxed">
@@ -86,7 +86,7 @@ export default function ContactPage() {
 
           {/* Luxury Contact Form */}
           <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="bg-ivory p-10 lg:p-14 shadow-premium rounded-sm">
-            <h3 className="text-3xl font-heading text-charcoal mb-8">Send a Message</h3>
+            <h3 className="text-h2 text-charcoal mb-8">Send a Message</h3>
             <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="relative">
@@ -121,7 +121,7 @@ export default function ContactPage() {
       <section className="h-[500px] w-full relative bg-sand/30">
         {/* Placeholder for Google Maps embed */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-charcoal/50 font-heading text-xl">Interactive Google Map Integration</p>
+          <p className="text-card-title text-charcoal/50">Interactive Google Map Integration</p>
         </div>
       </section>
     </div>

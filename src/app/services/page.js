@@ -51,7 +51,7 @@ export default function ServicesPage() {
       {/* Hero Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-24 text-center">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             Our Services
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -76,7 +76,7 @@ export default function ServicesPage() {
                 <motion.h2 variants={fadeUp} className="text-sm uppercase tracking-widest text-burgundy font-medium mb-4">
                   0{index + 1}. {service.subtitle}
                 </motion.h2>
-                <motion.h3 variants={fadeUp} className="text-4xl md:text-5xl font-heading text-charcoal mb-8 leading-tight">
+                <motion.h3 variants={fadeUp} className="text-h2 text-charcoal mb-8">
                   {service.title}
                 </motion.h3>
                 <motion.p variants={fadeUp} className="text-lg text-charcoal/70 font-light leading-relaxed mb-10">
@@ -92,7 +92,7 @@ export default function ServicesPage() {
 
               <div className="bg-ivory p-10 shadow-premium rounded-sm h-full flex flex-col justify-center">
                 <motion.div variants={fadeUp} className="mb-10">
-                  <h4 className="text-xl font-heading text-charcoal mb-6 border-b border-sand pb-3">Features & Deliverables</h4>
+                  <h4 className="text-card-title text-charcoal mb-6 border-b border-sand pb-3">Features & Deliverables</h4>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {service.features.map((feature, i) => (
                       <li key={i} className="flex items-center text-charcoal/70 font-light">
@@ -104,7 +104,7 @@ export default function ServicesPage() {
                 </motion.div>
                 
                 <motion.div variants={fadeUp}>
-                  <h4 className="text-xl font-heading text-charcoal mb-6 border-b border-sand pb-3">Key Benefits</h4>
+                  <h4 className="text-card-title text-charcoal mb-6 border-b border-sand pb-3">Key Benefits</h4>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {service.benefits.map((benefit, i) => (
                       <li key={i} className="flex items-center text-charcoal/70 font-light">
@@ -124,7 +124,7 @@ export default function ServicesPage() {
       <section className="bg-chocolate text-ivory py-24">
         <div className="container-custom px-6 md:px-12 lg:px-24 text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="max-w-3xl mx-auto">
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-heading mb-8">Ready to Start Your Project?</motion.h2>
+            <motion.h2 variants={fadeUp} className="text-h2 mb-8">Ready to Start Your Project?</motion.h2>
             <motion.p variants={fadeUp} className="text-sand/80 font-light mb-12 text-lg">Our team is ready to bring your vision to life with uncompromising quality and end-to-end management.</motion.p>
             <motion.div variants={fadeUp}>
               <Link href="/contact" className="inline-block bg-primary text-ivory px-10 py-4 text-sm uppercase tracking-widest hover:bg-ivory hover:text-charcoal transition-colors duration-300 rounded-sm">

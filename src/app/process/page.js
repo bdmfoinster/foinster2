@@ -34,7 +34,7 @@ export default function ProcessPage() {
       {/* Hero Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-24 text-center">
         <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.2 } } }} className="max-w-4xl mx-auto">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             Our Process
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -70,7 +70,7 @@ export default function ProcessPage() {
                 <div className={`ml-24 md:ml-0 w-full md:w-1/2 ${isEven ? 'md:pl-16 lg:pl-24' : 'md:pr-16 lg:pr-24'}`}>
                   <div className="bg-ivory p-8 md:p-10 shadow-sm border border-sand/30 rounded-sm hover:shadow-premium transition-shadow duration-300 relative group">
                     <span className="block text-xs font-bold uppercase tracking-widest text-burgundy mb-3">{step.timeline}</span>
-                    <h3 className="text-2xl font-heading text-charcoal mb-4 group-hover:text-primary transition-colors">{step.title}</h3>
+                    <h3 className="text-h4 text-charcoal mb-4 group-hover:text-primary transition-colors">{step.title}</h3>
                     <p className="text-charcoal/70 font-light leading-relaxed">{step.desc}</p>
                     
                     {/* Connecting line for desktop */}

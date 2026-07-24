@@ -22,7 +22,7 @@ export default function AboutPage() {
       {/* 1. Hero & About Us */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-24">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto text-center">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             About KVH Foinster
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -37,13 +37,13 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
               <motion.h2 variants={fadeUp} className="text-sm uppercase tracking-widest text-burgundy font-medium mb-6">Our Vision</motion.h2>
-              <motion.p variants={fadeUp} className="text-3xl font-heading text-charcoal leading-tight">
+              <motion.p variants={fadeUp} className="text-h2 text-charcoal">
                 To redefine the skyline of Kerala with sustainable, smart, and iconic structures.
               </motion.p>
             </motion.div>
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
               <motion.h2 variants={fadeUp} className="text-sm uppercase tracking-widest text-burgundy font-medium mb-6">Our Mission</motion.h2>
-              <motion.p variants={fadeUp} className="text-3xl font-heading text-charcoal leading-tight">
+              <motion.p variants={fadeUp} className="text-h2 text-charcoal">
                 To provide a seamless, transparent, and high-quality building experience for every client.
               </motion.p>
             </motion.div>
@@ -62,7 +62,7 @@ export default function AboutPage() {
             </div>
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="w-full lg:w-7/12">
-            <motion.h2 variants={fadeUp} className="text-4xl font-heading text-charcoal mb-4">Khaja Hussain</motion.h2>
+            <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-4">Khaja Hussain</motion.h2>
             <motion.p variants={fadeUp} className="text-sm uppercase tracking-widest text-burgundy mb-8">CEO, KVH Foinster</motion.p>
             <motion.div variants={fadeUp} className="space-y-6 text-charcoal/80 font-light leading-relaxed text-lg">
               <p>
@@ -83,7 +83,7 @@ export default function AboutPage() {
       <section className="bg-chocolate text-ivory py-24 mb-24">
         <div className="container-custom px-6 md:px-12 lg:px-24">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="text-center mb-16">
-            <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-heading mb-4">Our Design Philosophy</motion.h2>
+            <motion.h2 variants={fadeUp} className="text-h2 mb-4">Our Design Philosophy</motion.h2>
             <motion.p variants={fadeUp} className="text-sand/70 font-light text-xl tracking-wide uppercase">Beyond Aesthetics</motion.p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -94,7 +94,7 @@ export default function AboutPage() {
               { title: "Human-Centric", desc: "Creating spaces that prioritize the comfort and flow of the people using them." }
             ].map((phil, idx) => (
               <motion.div key={idx} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: idx * 0.1 }} viewport={{ once: true }} className="border-l border-burgundy/30 pl-6">
-                <h3 className="text-xl font-heading mb-3 text-primary">{phil.title}</h3>
+                <h3 className="text-card-title text-primary mb-3">{phil.title}</h3>
                 <p className="text-sand/70 font-light leading-relaxed">{phil.desc}</p>
               </motion.div>
             ))}
@@ -105,7 +105,7 @@ export default function AboutPage() {
       {/* 5. Why Foinster */}
       <section className="container-custom px-6 md:px-12 lg:px-24">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="mb-16">
-          <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-heading text-charcoal mb-4">Why Foinster</motion.h2>
+          <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-4">Why Foinster</motion.h2>
           <motion.div variants={fadeUp} className="w-16 h-[1px] bg-burgundy"></motion.div>
         </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -116,7 +116,7 @@ export default function AboutPage() {
             { title: "On-Time Delivery", desc: "Rigorous project management to meet every deadline." }
           ].map((reason, idx) => (
             <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: idx * 0.1 }} viewport={{ once: true }} className="bg-ivory p-10 shadow-premium rounded-sm hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-2xl font-heading text-charcoal mb-3">{reason.title}</h3>
+              <h3 className="text-h4 text-charcoal mb-3">{reason.title}</h3>
               <p className="text-charcoal/70 font-light leading-relaxed">{reason.desc}</p>
             </motion.div>
           ))}

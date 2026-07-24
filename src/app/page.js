@@ -47,7 +47,7 @@ export default function Home() {
           >
             <motion.h1 
               variants={fadeUp}
-              className="text-4xl md:text-6xl lg:text-7xl font-heading text-ivory leading-[1.1] mb-6"
+              className="text-hero text-ivory mb-6"
             >
               Crafted by many hands,<br/>perfected with one vision.
             </motion.h1>
@@ -96,7 +96,7 @@ export default function Home() {
                 <span className="w-12 h-[1px] bg-burgundy"></span>
                 <h4 className="text-sm uppercase tracking-widest text-burgundy font-medium">About Us</h4>
               </motion.div>
-              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal mb-8 leading-tight">
+              <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-8">
                 Transforming complex visions into architectural landmarks.
               </motion.h2>
               <motion.div variants={fadeUp} className="space-y-6 text-charcoal/70 font-light leading-relaxed">
@@ -125,7 +125,7 @@ export default function Home() {
                 <Image src="/interior.png" alt="Elegant Interior" fill className="object-cover" />
               </div>
               <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-cream p-8 md:p-12 shadow-premium rounded-tl-[40px] rounded-br-[40px] max-w-[280px]">
-                <h3 className="font-heading text-xl text-charcoal mb-3">Our Vision</h3>
+                <h3 className="text-card-title text-charcoal mb-3">Our Vision</h3>
                 <p className="text-sm text-charcoal/70 font-light">To redefine modern living through timeless design.</p>
               </div>
             </motion.div>
@@ -148,7 +148,7 @@ export default function Home() {
                 <span className="w-12 h-[1px] bg-burgundy"></span>
                 <h4 className="text-sm uppercase tracking-widest text-burgundy font-medium">Portfolio</h4>
               </motion.div>
-              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal leading-tight">
+              <motion.h2 variants={fadeUp} className="text-h2 text-charcoal">
                 Featured Projects
               </motion.h2>
             </motion.div>
@@ -163,32 +163,41 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { img: "/residential.png", cat: "Residential", year: "Villas", title: "Modern & Traditional Villas", desc: "Intelligent designs tailored to Kerala's tropical environment, enhancing value and functionality." },
-              { img: "/commercial.png", cat: "Commercial", year: "Multi-story", title: "Contemporary Developments", desc: "Mastering the art of space for commercial hubs, ensuring technical perfection." },
-              { img: "/hero.png", cat: "Convention Centers", year: "Grand", title: "Elevations & Hall Layouts", desc: "Creating spaces that prioritize the comfort and flow of the people using them." },
-              { img: "/interior.png", cat: "Premium Interiors", year: "Bespoke", title: "Residential & Commercial", desc: "Curating luxurious, functional indoor spaces tailored to your lifestyle." }
+              { img: "/residential.png", cat: "Residential", title: "Modern & Traditional Villas" },
+              { img: "/commercial.png", cat: "Commercial", title: "Contemporary Developments" },
+              { img: "/hero.png", cat: "Convention Centers", title: "Elevations & Hall Layouts" },
+              { img: "/interior.png", cat: "Premium Interiors", title: "Residential & Commercial" },
+              { img: "/residential.png", cat: "Residential", title: "Luxury Hillside Villa" },
+              { img: "/commercial.png", cat: "Commercial", title: "Meridian HQ Plaza" },
+              { img: "/hero.png", cat: "Convention Centers", title: "Emerald Convention Center" },
+              { img: "/interior.png", cat: "Premium Interiors", title: "Executive Office Suite" }
             ].map((project, idx) => (
               <motion.div 
                 key={idx}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: idx * 0.2 }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
                 viewport={{ once: true }}
-                className="group cursor-pointer"
+                className="group cursor-pointer relative overflow-hidden rounded-sm shadow-premium aspect-[4/3] w-full"
               >
-                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm mb-6">
-                  <Image src={project.img} alt={project.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-charcoal/10 group-hover:bg-transparent transition-colors duration-500"></div>
+                <Image 
+                  src={project.img} 
+                  alt={project.title} 
+                  fill 
+                  className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
+                  <span className="text-[10px] uppercase tracking-widest text-primary mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                    {project.cat}
+                  </span>
+                  <h3 className="text-card-title text-ivory transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                    {project.title}
+                  </h3>
                 </div>
-                <div className="flex items-center gap-3 text-xs tracking-widest text-charcoal/50 uppercase mb-3">
-                  <span>{project.cat}</span>
-                  <span className="w-1 h-1 rounded-full bg-burgundy"></span>
-                  <span>{project.year}</span>
-                </div>
-                <h3 className="text-2xl font-heading text-charcoal mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
-                <p className="text-charcoal/70 font-light leading-relaxed">{project.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -212,7 +221,7 @@ export default function Home() {
               <h4 className="text-sm uppercase tracking-widest text-sand font-medium">Capabilities</h4>
               <span className="w-8 h-[1px] bg-sand/50"></span>
             </motion.div>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading leading-tight">
+            <motion.h2 variants={fadeUp} className="text-h2">
               Our Expertise
             </motion.h2>
           </motion.div>
@@ -235,7 +244,7 @@ export default function Home() {
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-sand/10 text-sand mb-8 group-hover:scale-110 transition-transform duration-300">
                   <CheckCircle size={20} strokeWidth={1.5} />
                 </div>
-                <h3 className="text-xl font-heading mb-4">{service.title}</h3>
+                <h3 className="text-card-title mb-4">{service.title}</h3>
                 <p className="text-sand/70 font-light text-sm leading-relaxed">{service.desc}</p>
               </motion.div>
             ))}
@@ -253,7 +262,7 @@ export default function Home() {
             variants={staggerContainer}
             className="text-center mb-16"
           >
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal">
+            <motion.h2 variants={fadeUp} className="text-h2 text-charcoal">
               Client Perspectives
             </motion.h2>
           </motion.div>
@@ -271,7 +280,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 className="bg-cream p-10 shadow-premium rounded-sm"
               >
-                <p className="text-lg md:text-xl font-heading text-charcoal leading-relaxed mb-8 italic">
+                <p className="text-card-title text-charcoal leading-relaxed mb-8 italic">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-center gap-4">
@@ -301,7 +310,7 @@ export default function Home() {
             <div className="absolute bottom-0 right-0 w-40 h-40 bg-sand/30 rounded-tl-full"></div>
             
             <div className="relative z-10">
-              <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-heading text-charcoal mb-6">
+              <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-6">
                 Ready to transform your space?
               </motion.h2>
               <motion.p variants={fadeUp} className="text-charcoal/70 font-light mb-12 max-w-xl mx-auto">

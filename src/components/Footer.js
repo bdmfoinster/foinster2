@@ -10,11 +10,11 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-5 flex flex-col items-start">
             <Image
-              src="/logo.jpg"
-              alt="Foinster Arch Logo"
-              width={240}
-              height={80}
-              className="object-contain w-auto h-12 md:h-16 mb-8 mix-blend-screen invert opacity-90"
+              src="/logo.png"
+              alt="KVH Foinster Logo"
+              width={300}
+              height={100}
+              className="object-contain w-auto h-[56px] md:h-[72px] lg:h-[88px] mb-8 invert opacity-90"
             />
             <p className="text-sand/80 leading-relaxed max-w-sm font-light text-sm md:text-base">
               Designing spaces with clarity, craft, and calm. We create timeless architecture, interiors, renovations, and turnkey solutions shaped by context, function, and elegance.
@@ -23,7 +23,7 @@ export default function Footer() {
           
           {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h4 className="font-heading text-lg md:text-xl text-cream mb-6 tracking-wide">Quick Links</h4>
+            <h4 className="text-card-title text-cream mb-6 tracking-wide">Quick Links</h4>
             <ul className="space-y-4">
               <li><Link href="/about" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">About Us</Link></li>
               <li><Link href="/services" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Services</Link></li>
@@ -34,7 +34,7 @@ export default function Footer() {
 
           {/* Support */}
           <div className="lg:col-span-2">
-            <h4 className="font-heading text-lg md:text-xl text-cream mb-6 tracking-wide">Support</h4>
+            <h4 className="text-card-title text-cream mb-6 tracking-wide">Support</h4>
             <ul className="space-y-4">
               <li><Link href="/gallery" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Gallery</Link></li>
               <li><Link href="/blog" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Blog</Link></li>
@@ -46,7 +46,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="lg:col-span-3">
-            <h4 className="font-heading text-lg md:text-xl text-cream mb-6 tracking-wide">Contact</h4>
+            <h4 className="text-card-title text-cream mb-6 tracking-wide">Contact</h4>
             <div className="space-y-4">
               <div className="flex items-start space-x-3 text-sand/70">
                 <MapPin size={18} className="mt-1 flex-shrink-0 text-burgundy" strokeWidth={1.5} />

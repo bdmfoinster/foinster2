@@ -81,7 +81,7 @@ export default function BlogPage() {
       {/* Hero Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-20 text-center">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             Journal & Insights
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -110,7 +110,7 @@ export default function BlogPage() {
           </div>
           <div className="lg:w-1/3 p-10 lg:p-16 flex flex-col justify-center border-l border-sand/30">
             <span className="text-xs uppercase tracking-widest text-burgundy mb-4 block">Featured • Villa Design</span>
-            <h2 className="text-3xl lg:text-4xl font-heading text-charcoal mb-6 group-hover:text-primary transition-colors leading-tight">
+            <h2 className="text-h2 text-charcoal mb-6 group-hover:text-primary transition-colors leading-tight">
               Mastering Scale and Proportion in Luxury Homes
             </h2>
             <p className="text-charcoal/70 font-light leading-relaxed mb-8">
@@ -131,7 +131,7 @@ export default function BlogPage() {
       {/* Blog Grid */}
       <section className="container-custom px-6 md:px-12 lg:px-24">
         <div className="flex items-center justify-between border-b border-sand pb-6 mb-12">
-          <h3 className="text-2xl font-heading text-charcoal">Latest Articles</h3>
+          <h3 className="text-h3 text-charcoal">Latest Articles</h3>
           <div className="hidden md:flex gap-6">
             {categories.map((cat, i) => (
               <button key={i} className={`text-xs uppercase tracking-widest ${i === 0 ? 'text-primary' : 'text-charcoal/50 hover:text-charcoal transition-colors'}`}>
@@ -160,7 +160,7 @@ export default function BlogPage() {
               </div>
               <div className="flex flex-col flex-grow">
                 <span className="text-xs uppercase tracking-widest text-burgundy mb-3">{post.category}</span>
-                <h4 className="text-2xl font-heading text-charcoal mb-4 group-hover:text-primary transition-colors leading-snug">
+                <h4 className="text-h4 text-charcoal mb-4 group-hover:text-primary transition-colors leading-snug">
                   {post.title}
                 </h4>
                 <p className="text-charcoal/70 font-light leading-relaxed mb-6 flex-grow">

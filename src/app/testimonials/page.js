@@ -71,7 +71,7 @@ export default function TestimonialsPage() {
       {/* Hero Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-20 text-center">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto">
-          <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
             Client Perspectives
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -103,16 +103,16 @@ export default function TestimonialsPage() {
                 ))}
               </div>
               
-              <p className="text-xl md:text-2xl font-heading text-charcoal leading-relaxed mb-10 flex-grow relative z-10">
+              <p className="text-h4 text-charcoal leading-relaxed mb-10 flex-grow relative z-10">
                 "{test.text}"
               </p>
               
               <div className="flex items-center gap-5 border-t border-sand/50 pt-8 relative z-10">
-                <div className="w-14 h-14 bg-charcoal text-ivory rounded-full flex items-center justify-center font-heading text-xl shadow-md">
+                <div className="w-14 h-14 bg-charcoal text-ivory rounded-full flex items-center justify-center text-card-title shadow-md">
                   {test.avatar}
                 </div>
                 <div>
-                  <h4 className="font-heading text-lg text-charcoal">{test.name}</h4>
+                  <h4 className="text-small-heading text-charcoal">{test.name}</h4>
                   <p className="text-xs uppercase tracking-widest text-burgundy">{test.projectType}</p>
                 </div>
               </div>

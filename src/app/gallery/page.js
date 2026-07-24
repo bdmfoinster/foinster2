@@ -32,7 +32,7 @@ export default function GalleryPage() {
       {/* Header */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-16 text-center">
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-heading text-charcoal mb-8">
+          <h1 className="text-h1 text-charcoal mb-8">
             Visual Gallery
           </h1>
           <p className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
@@ -84,7 +84,7 @@ export default function GalleryPage() {
                 {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-charcoal/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col items-center justify-center text-ivory">
                   <ZoomIn size={48} className="mb-4 opacity-70" strokeWidth={1} />
-                  <span className="font-heading text-xl">{image.category}</span>
+                  <span className="text-card-title">{image.category}</span>
                 </div>
               </motion.div>
             ))}
@@ -124,7 +124,7 @@ export default function GalleryPage() {
                 priority
               />
               <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-charcoal/80 to-transparent p-6">
-                <p className="text-ivory font-heading text-2xl">{selectedImage.alt}</p>
+                <p className="text-h4 text-ivory">{selectedImage.alt}</p>
                 <p className="text-ivory/70 text-sm uppercase tracking-widest">{selectedImage.category}</p>
               </div>
             </motion.div>

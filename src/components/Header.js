@@ -42,11 +42,11 @@ export default function Header() {
       <div className="container-custom flex justify-between items-center px-6 md:px-12 lg:px-24">
         <Link href="/" className="relative z-10 block transition-transform duration-300 hover:scale-[1.02]">
           <Image
-            src="/logo.jpg"
-            alt="Foinster Arch Logo"
-            width={240}
-            height={80}
-            className="object-contain w-auto h-12 md:h-16 mix-blend-multiply"
+            src="/logo.png"
+            alt="KVH Foinster Logo"
+            width={300}
+            height={100}
+            className="object-contain w-auto h-[56px] md:h-[72px] lg:h-[88px]"
             priority
           />
         </Link>
@@ -89,7 +89,7 @@ export default function Header() {
                   <Link
                     key={link.name}
                     href={link.path}
-                    className="text-2xl font-heading text-charcoal hover:text-primary transition-colors duration-300"
+                    className="text-h4 text-charcoal hover:text-primary transition-colors duration-300"
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {link.name}
