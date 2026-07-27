@@ -28,7 +28,6 @@ export default function Footer() {
               <li><Link href="/about" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">About Us</Link></li>
               <li><Link href="/services" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Services</Link></li>
               <li><Link href="/projects" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Projects</Link></li>
-              <li><Link href="/process" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Our Process</Link></li>
             </ul>
           </div>
 
@@ -38,8 +37,6 @@ export default function Footer() {
             <ul className="space-y-4">
               <li><Link href="/gallery" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Gallery</Link></li>
               <li><Link href="/blog" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Blog</Link></li>
-              <li><Link href="/testimonials" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Testimonials</Link></li>
-              <li><Link href="/faq" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">FAQ</Link></li>
               <li><Link href="/contact" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Contact</Link></li>
             </ul>
           </div>
