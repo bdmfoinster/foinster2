@@ -152,34 +152,30 @@ export default function ProjectsPage() {
 
       {/* Projects Grid */}
       <section className="container-custom px-6 md:px-12 lg:px-24">
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
           <AnimatePresence>
             {filteredProjects.map((project) => (
               <motion.div
                 layout
                 key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 30 }}
                 transition={{ duration: 0.5 }}
-                className="group cursor-pointer relative overflow-hidden rounded-sm shadow-premium aspect-[4/3] w-full"
+                className="group cursor-pointer flex flex-col items-center"
               >
-                <Image 
-                  src={project.image} 
-                  alt={project.title} 
-                  fill 
-                  className="object-cover transition-transform duration-700 group-hover:scale-110" 
-                />
-                
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/90 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                  <span className="text-[10px] uppercase tracking-widest text-primary mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
-                    {project.category}
-                  </span>
-                  <h3 className="text-card-title text-ivory transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
-                    {project.title}
-                  </h3>
+                <div className="relative overflow-hidden w-full aspect-[4/3] mb-6 shadow-sm group-hover:shadow-md transition-shadow duration-500">
+                  <Image 
+                    src={project.image} 
+                    alt={project.title} 
+                    fill 
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105" 
+                  />
                 </div>
+                
+                <h3 className="text-sm tracking-wide text-charcoal/90 text-center transition-colors duration-300 group-hover:text-primary">
+                  {project.title}
+                </h3>
               </motion.div>
             ))}
           </AnimatePresence>
