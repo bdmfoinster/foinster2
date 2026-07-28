@@ -4,17 +4,17 @@ import { MapPin, Phone, Mail } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-chocolate text-ivory py-16 md:py-24 border-t border-burgundy/20">
+    <footer className="bg-chocolate text-ivory py-10 md:py-12 border-t border-burgundy/20">
       <div className="container-custom px-6 md:px-12 lg:px-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 mb-10">
           {/* Brand Info */}
           <div className="lg:col-span-5 flex flex-col items-start">
             <Image
               src="/logo.png"
               alt="KVH Foinster Logo"
-              width={240}
-              height={80}
-              className="object-contain w-auto h-[36px] md:h-[44px] lg:h-[56px] mb-8 invert opacity-90"
+              width={280}
+              height={90}
+              className="object-contain w-auto h-[48px] md:h-[56px] lg:h-[72px] mb-6 invert opacity-90"
             />
             <p className="text-sand/80 leading-relaxed max-w-sm font-light text-sm md:text-base">
               Designing spaces with clarity, craft, and calm. We create timeless architecture, interiors, renovations, and turnkey solutions shaped by context, function, and elegance.

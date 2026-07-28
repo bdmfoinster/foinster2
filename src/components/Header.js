@@ -53,9 +53,9 @@ export default function Header() {
           <Image
             src="/logo.png"
             alt="KVH Foinster Logo"
-            width={240}
-            height={80}
-            className="object-contain w-auto h-[36px] md:h-[44px] lg:h-[56px]"
+            width={280}
+            height={90}
+            className="object-contain w-auto h-[48px] md:h-[56px] lg:h-[72px]"
             priority
           />
         </Link>
