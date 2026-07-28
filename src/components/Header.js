@@ -30,12 +30,7 @@ export default function Header() {
     },
     { name: "Services", path: "/services" },
     { name: "Projects", path: "/projects" },
-    { 
-      name: "Gallery", 
-      subLinks: [
-        { name: "Gallery", path: "/gallery" }
-      ]
-    },
+    { name: "Gallery", path: "/gallery" },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/contact" },
   ];
@@ -75,11 +70,9 @@ export default function Header() {
               ) : (
                 <div className="text-sm font-medium tracking-wide uppercase text-charcoal hover:text-primary transition-colors duration-300 cursor-pointer flex items-center gap-1 h-8">
                   {link.name}
-                  {link.name !== "Gallery" && (
-                    <svg className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  )}
+                  <svg className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                  </svg>
                   <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-300 group-hover:w-full"></span>
                 </div>
               )}
@@ -142,11 +135,9 @@ export default function Header() {
                         className="text-h4 text-charcoal hover:text-primary transition-colors duration-300 flex items-center justify-center gap-2"
                       >
                         {link.name}
-                        {link.name !== "Gallery" && (
-                          <svg className={`w-6 h-6 transition-transform duration-300 ${openDropdown === link.name ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-                          </svg>
-                        )}
+                        <svg className={`w-6 h-6 transition-transform duration-300 ${openDropdown === link.name ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+                        </svg>
                       </button>
                     )}
                     
