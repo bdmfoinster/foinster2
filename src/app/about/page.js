@@ -22,19 +22,19 @@ const staggerContainer = {
 };
 
 const steps = [
-  { icon: MessageSquare, title: "Consultation", timeline: "Week 1", desc: "Initial meeting to understand your vision, lifestyle, and project goals." },
-  { icon: ClipboardList, title: "Requirement Analysis", timeline: "Week 1-2", desc: "Detailed breakdown of functional requirements and spatial needs." },
-  { icon: Map, title: "Site Visit", timeline: "Week 2", desc: "Comprehensive site analysis to understand context, climate, and topography." },
-  { icon: Lightbulb, title: "Concept Development", timeline: "Week 3-4", desc: "Translating ideas into preliminary design concepts and mood boards." },
-  { icon: PenTool, title: "Planning", timeline: "Week 4-5", desc: "Developing precise floor plans optimizing space, light, and ventilation." },
-  { icon: Box, title: "3D Visualization", timeline: "Week 6-8", desc: "Photorealistic 3D renderings to help you visualize the final outcome." },
-  { icon: DraftingCompass, title: "Working Drawings", timeline: "Week 8-10", desc: "Detailed architectural and structural blueprints for execution." },
-  { icon: Layers, title: "Material Selection", timeline: "Week 10-12", desc: "Curating premium finishes, fixtures, and materials aligned with the design." },
-  { icon: Hammer, title: "Execution", timeline: "Month 3+", desc: "Rigorous on-site construction and project management by our turnkey team." },
-  { icon: CheckSquare, title: "Quality Inspection", timeline: "Ongoing", desc: "Continuous monitoring to ensure structural integrity and flawless finishes." },
-  { icon: Eye, title: "Client Review", timeline: "Pre-Handover", desc: "Final walkthrough to ensure every detail meets our uncompromising standards." },
-  { icon: Key, title: "Project Handover", timeline: "Completion", desc: "Delivering the keys to your newly transformed space." },
-  { icon: Wrench, title: "Maintenance Support", timeline: "Post-Handover", desc: "Ongoing support to preserve the quality and longevity of the build." }
+  { icon: MessageSquare, title: "Consultation", timeline: "Step 1", desc: "Initial meeting to understand your vision, lifestyle, and project goals." },
+  { icon: ClipboardList, title: "Requirement Analysis", timeline: "Step 2", desc: "Detailed breakdown of functional requirements and spatial needs." },
+  { icon: Map, title: "Site Visit", timeline: "Step 3", desc: "Comprehensive site analysis to understand context, climate, and topography." },
+  { icon: Lightbulb, title: "Concept Development", timeline: "Step 4", desc: "Translating ideas into preliminary design concepts and mood boards." },
+  { icon: PenTool, title: "Planning", timeline: "Step 5", desc: "Developing precise floor plans optimizing space, light, and ventilation." },
+  { icon: Box, title: "3D Visualization", timeline: "Step 6", desc: "Photorealistic 3D renderings to help you visualize the final outcome." },
+  { icon: DraftingCompass, title: "Working Drawings", timeline: "Step 7", desc: "Detailed architectural and structural blueprints for execution." },
+  { icon: Layers, title: "Material Selection", timeline: "Step 8", desc: "Curating premium finishes, fixtures, and materials aligned with the design." },
+  { icon: Hammer, title: "Execution", timeline: "Step 9", desc: "Rigorous on-site construction and project management by our turnkey team." },
+  { icon: CheckSquare, title: "Quality Inspection", timeline: "Step 10", desc: "Continuous monitoring to ensure structural integrity and flawless finishes." },
+  { icon: Eye, title: "Client Review", timeline: "Step 11", desc: "Final walkthrough to ensure every detail meets our uncompromising standards." },
+  { icon: Key, title: "Project Handover", timeline: "Step 12", desc: "Delivering the keys to your newly transformed space." },
+  { icon: Wrench, title: "Maintenance Support", timeline: "Step 13", desc: "Ongoing support to preserve the quality and longevity of the build." }
 ];
 
 export default function AboutPage() {

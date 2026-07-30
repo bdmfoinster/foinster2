@@ -24,7 +24,6 @@ export default function Header() {
     { 
       name: "About", 
       subLinks: [
-        { name: "About", path: "/about" },
         { name: "Process", path: "/about#process" }
       ]
     },
