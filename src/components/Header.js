@@ -23,6 +23,7 @@ export default function Header() {
     { name: "Home", path: "/" },
     { 
       name: "About", 
+      path: "/about",
       subLinks: [
         { name: "Process", path: "/about#process" }
       ]
@@ -120,7 +121,7 @@ export default function Header() {
               <nav className="flex flex-col items-center space-y-6 w-full max-w-sm px-6">
                 {navLinks.map((link) => (
                   <div key={link.name} className="w-full flex flex-col items-center">
-                    {link.path ? (
+                    {link.path && !link.subLinks ? (
                       <Link
                         href={link.path}
                         className="text-h4 text-charcoal hover:text-primary transition-colors duration-300"
@@ -128,6 +129,27 @@ export default function Header() {
                       >
                         {link.name}
                       </Link>
+                    ) : link.path && link.subLinks ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <Link
+                          href={link.path}
+                          className="text-h4 text-charcoal hover:text-primary transition-colors duration-300"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          {link.name}
+                        </Link>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpenDropdown(openDropdown === link.name ? null : link.name);
+                          }}
+                          className="text-charcoal hover:text-primary p-2"
+                        >
+                          <svg className={`w-5 h-5 transition-transform duration-300 ${openDropdown === link.name ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      </div>
                     ) : (
                       <button
                         onClick={() => setOpenDropdown(openDropdown === link.name ? null : link.name)}

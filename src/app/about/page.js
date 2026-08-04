@@ -37,6 +37,53 @@ const steps = [
   { icon: Wrench, title: "Maintenance Support", timeline: "Step 13", desc: "Ongoing support to preserve the quality and longevity of the build." }
 ];
 
+const teamMembers = [
+  { name: "Hamza Kutty", role: "Founder", image: "/team/Hamza kutty - Founder.jpg" },
+  { name: "Khaja Hussain", role: "CEO", image: "/team/Khaja hussain - CEO.jpg" },
+  { name: "Faisal Babu", role: "Executive Director", image: "/team/Faisal Babu - Executive Director.jpg" },
+  { name: "Rahul", role: "Design Manager", image: "/team/Rahul - Design Manager.jpg" },
+  { name: "Shanib", role: "BDM", image: "/team/Shanib - BDM.jpg" },
+  { name: "Anjana", role: "Accounts Manager", image: "/team/Anjana - Accounts Manager.jpg" },
+  { name: "Athira", role: "HR Executive", image: "/team/Athira - HR Executive.jpg" },
+  { name: "Sukanya", role: "CRM", image: "/team/Sukanya - CRM.jpg" },
+  { name: "Kadeeja Shaibi", role: "Architect", image: "/team/Kadeeja Shaibi - Architect.jpg" },
+  { name: "Sooraj", role: "Senior Designer", image: "/team/Sooraj - Senior Designer.jpg" },
+  { name: "Adhil", role: "Junior Designer", image: "/team/Adhil - Junior Designer.jpg" },
+  { name: "Fayas", role: "Junior Designer", image: "/team/Fayas - Junior Designer.jpg" },
+  { name: "Junaid", role: "3D Visualizer", image: "/team/Junaid - 3D Visualizer.jpg" },
+  { name: "Unni Mohandas", role: "3D Visualizer", image: "/team/Unni Mohandas - 3D Visualizer.jpg" },
+  { name: "Shifana", role: "2D Detailer", image: "/team/Shifana - 2D Detailer.jpg" },
+  { name: "Noushad", role: "Senior Accountant", image: "/team/Noushad - Senior Accountant.jpg" },
+  { name: "Akhil", role: "Site Supervisor", image: "/team/Akhil - Site Supervisor.jpg" },
+  { name: "Goutham", role: "Site Supervisor", image: "/team/Goutham - Site Supervisor.jpg" },
+  { name: "Murshid", role: "Site Supervisor", image: "/team/Murshid - Site Supervisor.jpg" },
+  { name: "Shamil", role: "Site Supervisor", image: "/team/Shamil - Site supervisor.jpg" },
+  { name: "Swalih", role: "Site Supervisor", image: "/team/Swalih - Site Supervisor.jpg" },
+];
+
+const TeamCard = ({ member }) => (
+  <motion.div 
+    variants={fadeUp}
+    className="group bg-ivory rounded-sm overflow-hidden shadow-premium hover:shadow-lg transition-all duration-500 flex flex-col transform hover:-translate-y-1"
+  >
+    <div className="relative aspect-[4/5] w-full overflow-hidden bg-sand">
+      <Image
+        src={member.image}
+        alt={member.name}
+        fill
+        className="object-cover object-center transition-transform duration-700 ease-in-out group-hover:scale-105"
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+      />
+    </div>
+    <div className="p-6 text-center flex-grow flex flex-col justify-center bg-ivory relative z-10 border-t border-sand/30">
+      <h3 className="text-h4 text-charcoal mb-1 group-hover:text-primary transition-colors duration-300">{member.name}</h3>
+      <p className="text-xs uppercase tracking-widest text-burgundy font-medium">
+        {member.role}
+      </p>
+    </div>
+  </motion.div>
+);
+
 export default function AboutPage() {
   return (
     <div className="bg-cream min-h-screen pt-32 pb-24">
@@ -77,9 +124,7 @@ export default function AboutPage() {
         <div className="flex flex-col lg:flex-row items-center gap-16">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="w-full lg:w-5/12">
             <div className="relative aspect-[3/4] rounded-sm overflow-hidden shadow-premium bg-sand">
-              {/* Assuming a CEO photo exists or we use a stylish placeholder */}
-              <div className="absolute inset-0 flex items-center justify-center text-stone font-light italic">CEO Photo</div>
-              {/* <Image src="/ceo.jpg" alt="Khaja Hussain - CEO" fill className="object-cover" /> */}
+              <Image src="/team/Khaja hussain - CEO.jpg" alt="Khaja Hussain - CEO" fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" />
             </div>
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="w-full lg:w-7/12">
@@ -141,6 +186,30 @@ export default function AboutPage() {
               <p className="text-charcoal/70 font-light leading-relaxed">{reason.desc}</p>
             </motion.div>
           ))}
+        </div>
+      </section>
+
+      {/* Our Team Section */}
+      <section className="bg-cream py-24 mb-24 border-t border-sand/30">
+        <div className="container-custom px-6 md:px-12 lg:px-24">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="text-center mb-16">
+            <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-4">Meet Our Team</motion.h2>
+            <motion.p variants={fadeUp} className="text-charcoal/70 font-light text-lg md:text-xl max-w-3xl mx-auto">
+              The talented architects, engineers, designers, and project specialists who transform ideas into exceptional spaces.
+            </motion.p>
+          </motion.div>
+          
+          <motion.div 
+            initial="hidden" 
+            whileInView="visible" 
+            viewport={{ once: true, margin: "-50px" }} 
+            variants={staggerContainer}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          >
+            {teamMembers.map((member, index) => (
+              <TeamCard key={index} member={member} />
+            ))}
+          </motion.div>
         </div>
       </section>
 
