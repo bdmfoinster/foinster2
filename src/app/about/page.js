@@ -119,17 +119,17 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* 3. CEO Section */}
+      {/* 3. Founder Section */}
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-24">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="w-full lg:w-5/12">
             <div className="relative aspect-[3/4] rounded-sm overflow-hidden shadow-premium bg-sand">
-              <Image src="/team/Khaja hussain - CEO.jpg" alt="Khaja Hussain - CEO" fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" />
+              <Image src="/team/Hamza_Kutty_Founder_Latest.jpg" alt="Hamza Kutty - Founder" fill className="object-cover object-top" sizes="(max-width: 1024px) 100vw, 50vw" />
             </div>
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="w-full lg:w-7/12">
-            <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-4">Khaja Hussain</motion.h2>
-            <motion.p variants={fadeUp} className="text-sm uppercase tracking-widest text-burgundy mb-8">CEO, KVH Foinster</motion.p>
+            <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-4">Hamza Kutty</motion.h2>
+            <motion.p variants={fadeUp} className="text-sm uppercase tracking-widest text-burgundy mb-8">Founder, KVH Foinster</motion.p>
             <motion.div variants={fadeUp} className="space-y-6 text-charcoal/80 font-light leading-relaxed text-lg">
               <p>
                 "We transform complex visions into architectural landmarks. Guided by a decade of architectural excellence, KVH Foinster is driven by a steadfast commitment to quality and innovation."
