@@ -38,10 +38,11 @@ const steps = [
 ];
 
 const teamMembers = [
-  { name: "Khaja Hussain", role: "CEO", image: "/team/Khaja hussain - CEO.jpg" },
+  { name: "Hamza Kutty", role: "Founder", image: "/team/Hamza_Kutty_Founder_Latest.jpg" },
   { name: "Faisal Babu", role: "Executive Director", image: "/team/Faisal Babu - Executive Director.jpg" },
-  { name: "Rahul", role: "Design Manager", image: "/team/Rahul - Design Manager.jpg" },
+  { name: "Khaja Hussain", role: "CEO", image: "/team/Khaja hussain - CEO.jpg" },
   { name: "Shanib", role: "BDM", image: "/team/Shanib - BDM.jpg" },
+  { name: "Rahul", role: "Design Manager", image: "/team/Rahul - Design Manager.jpg" },
   { name: "Anjana", role: "Accounts Manager", image: "/team/Anjana - Accounts Manager.jpg" },
   { name: "Athira", role: "HR Executive", image: "/team/Athira - HR Executive.jpg" },
   { name: "Sukanya", role: "CRM", image: "/team/Sukanya - CRM.jpg" },
