@@ -38,7 +38,6 @@ const steps = [
 ];
 
 const teamMembers = [
-  { name: "Hamza Kutty", role: "Founder", image: "/team/Hamza_Kutty_Founder_Latest.jpg" },
   { name: "Faisal Babu", role: "Executive Director", image: "/team/Faisal Babu - Executive Director.jpg" },
   { name: "Khaja Hussain", role: "CEO", image: "/team/Khaja hussain - CEO.jpg" },
   { name: "Shanib", role: "BDM", image: "/team/Shanib - BDM.jpg" },
