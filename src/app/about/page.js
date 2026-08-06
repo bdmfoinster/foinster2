@@ -58,6 +58,9 @@ const teamMembers = [
   { name: "Murshid", role: "Site Supervisor", image: "/team/Murshid - Site Supervisor.jpg" },
   { name: "Shamil", role: "Site Supervisor", image: "/team/Shamil - Site supervisor.jpg" },
   { name: "Swalih", role: "Site Supervisor", image: "/team/Swalih - Site Supervisor.jpg" },
+  { name: "Mubasheer", role: "Project Manager", image: "/team/Mubasheer - Project Manager.jpeg", description: "Expertly coordinates complex architectural projects from inception to execution. Ensures seamless client communication, rigorous scheduling, and strict quality control across multidisciplinary teams." },
+  { name: "Abhijith", role: "Design Trainee", image: "/team/Abhijith - Design Trainee.jpeg", description: "Assists senior architects in conceptual drafting and comprehensive design development. Specializes in advanced CAD/BIM workflows while maintaining a strong commitment to continuous learning and technical documentation." },
+  { name: "Sibindas", role: "Design Trainee", image: "/team/Sibindas - Design Trainee.jpeg", description: "Supports the design team with precise architectural drafting and project visualization. Actively applies CAD/BIM techniques to assist in design development and technical documentation while focused on continuous professional growth." }
 ];
 
 const TeamCard = ({ member }) => (
