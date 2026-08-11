@@ -35,7 +35,6 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h4 className="text-card-title text-cream mb-6 tracking-wide">Support</h4>
             <ul className="space-y-4">
-              <li><Link href="/gallery" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Gallery</Link></li>
               <li><Link href="/blog" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Blog</Link></li>
               <li><Link href="/contact" className="text-sm text-sand/70 hover:text-ivory transition-colors duration-300">Contact</Link></li>
             </ul>
