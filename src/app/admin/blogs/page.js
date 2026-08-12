@@ -49,35 +49,17 @@ export default function ManageBlogs() {
     setIsUploading(true);
 
     try {
-      // 1. Upload image to Supabase Storage
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `blogs/${fileName}`;
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('excerpt', excerpt);
+      formData.append('content', content);
+      formData.append('date', date);
+      formData.append('file', imageFile);
 
-      const { error: uploadError } = await supabase.storage
-        .from('images')
-        .upload(filePath, imageFile);
-
-      if (uploadError) throw uploadError;
-
-      // 2. Get the public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('images')
-        .getPublicUrl(filePath);
-
-      // 3. Save blog to database using API route to bypass RLS
+      // 3. Save blog and upload image to database using API route to bypass RLS
       const response = await fetch('/api/admin/blogs', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          excerpt,
-          content,
-          image_url: publicUrl,
-          date
-        }),
+        body: formData,
       });
 
       const result = await response.json();

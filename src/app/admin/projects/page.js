@@ -46,33 +46,15 @@ export default function ManageProjects() {
     setIsUploading(true);
 
     try {
-      // 1. Upload image to Supabase Storage
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `projects/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('images') // Make sure this bucket is created in Supabase!
-        .upload(filePath, imageFile);
-
-      if (uploadError) throw uploadError;
-
-      // 2. Get the public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('images')
-        .getPublicUrl(filePath);
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('category', category);
+      formData.append('file', imageFile);
 
       // 3. Save project to database using API route to bypass RLS
       const response = await fetch('/api/admin/projects', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title,
-          category,
-          image_url: publicUrl
-        }),
+        body: formData,
       });
 
       const result = await response.json();
