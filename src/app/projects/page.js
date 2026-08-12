@@ -21,9 +21,14 @@ export default function ProjectsPage() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
-      if (data) {
-        setDbProjects(data);
+      try {
+        const res = await fetch('/api/projects');
+        const json = await res.json();
+        if (json.success) {
+          setDbProjects(json.data);
+        }
+      } catch (err) {
+        console.error(err);
       }
       setLoading(false);
     };

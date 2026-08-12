@@ -25,9 +25,14 @@ export default function BlogPage() {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const { data, error } = await supabase.from('blogs').select('*').order('created_at', { ascending: false });
-      if (data) {
-        setBlogs(data);
+      try {
+        const res = await fetch('/api/blogs');
+        const json = await res.json();
+        if (json.success) {
+          setBlogs(json.data);
+        }
+      } catch (err) {
+        console.error(err);
       }
       setLoading(false);
     };
