@@ -36,7 +36,11 @@ export default function MasonryGallery({ images }) {
   return (
     <>
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4 pb-20">
-        {images.map((src, index) => (
+        {images.map((imageItem, index) => {
+          const srcUrl = typeof imageItem === 'string' ? imageItem : imageItem.src;
+          const altText = typeof imageItem === 'string' ? `Project ${index + 1}` : imageItem.title || `Project ${index + 1}`;
+          
+          return (
           <motion.div
             key={index}
             variants={fadeUpVariants}
@@ -49,18 +53,9 @@ export default function MasonryGallery({ images }) {
               className="relative w-full cursor-pointer overflow-hidden rounded-sm bg-sand/20 shadow-sm transition-all duration-500 hover:shadow-xl group"
               onClick={() => openLightbox(index)}
             >
-              {/* Using a placeholder ratio to prevent CLS before load, but we don't know the exact ratio.
-                  Next.js Image with layout="responsive" is deprecated in 13+, so we use standard styling for masonry. 
-                  In standard masonry, we can just render the image natively or let Next.js figure out width/height.
-                  Since we need width/height for next/image without fill, or we use standard img tag, 
-                  Next.js allows omitting width/height if using layout fill, but in masonry heights vary. 
-                  To solve CLS in masonry without knowing dimensions, we can use an empty div with padding, but we don't have dimensions.
-                  Alternatively, we can use a standard HTML img tag for the masonry flow to determine height naturally, but Next.js Image is better for optimization.
-                  Let's use Next.js Image with style={{ width: '100%', height: 'auto' }} and generic dimensions that scale.
-              */}
               <Image
-                src={src}
-                alt={`Residential Project ${index + 1}`}
+                src={srcUrl}
+                alt={altText}
                 width={800}
                 height={600}
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -70,7 +65,8 @@ export default function MasonryGallery({ images }) {
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
             </div>
           </motion.div>
-        ))}
+          );
+        })}
       </div>
 
       <Lightbox 

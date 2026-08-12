@@ -30,6 +30,8 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose, onNavi
   if (!isOpen || currentIndex === null) return null;
 
   const currentImage = images[currentIndex];
+  const srcUrl = typeof currentImage === 'string' ? currentImage : currentImage.src;
+  const altText = typeof currentImage === 'string' ? `Project ${currentIndex + 1}` : currentImage.title || `Project ${currentIndex + 1}`;
 
   return (
     <AnimatePresence>
@@ -105,8 +107,8 @@ export default function Lightbox({ images, currentIndex, isOpen, onClose, onNavi
               className="relative w-full h-full max-w-7xl max-h-[85vh] flex items-center justify-center"
             >
               <Image
-                src={currentImage}
-                alt={`Residential Project ${currentIndex + 1}`}
+                src={srcUrl}
+                alt={altText}
                 fill
                 className="object-contain"
                 sizes="100vw"
