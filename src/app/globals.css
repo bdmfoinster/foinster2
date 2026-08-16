@@ -30,13 +30,13 @@
 @layer components {
   /* Typography Scale */
   .text-hero {
-    @apply text-6xl xl:text-7xl font-semibold tracking-[-0.04em] leading-[0.95] font-heading;
+    @apply text-4xl md:text-6xl xl:text-7xl font-semibold tracking-[-0.04em] leading-[0.95] font-heading;
   }
   .text-h1 {
-    @apply text-5xl font-semibold tracking-[-0.02em] leading-tight font-heading;
+    @apply text-4xl md:text-5xl font-semibold tracking-[-0.02em] leading-tight font-heading;
   }
   .text-h2 {
-    @apply text-4xl font-semibold tracking-[-0.01em] leading-tight font-heading;
+    @apply text-3xl md:text-4xl font-semibold tracking-[-0.01em] leading-tight font-heading;
   }
   .text-h3 {
     @apply text-3xl font-medium tracking-tight leading-snug font-heading;

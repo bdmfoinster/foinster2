@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <div className="bg-cream min-h-screen">
       {/* 1. Hero Banner */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[100dvh] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
             src="/hero.png" 
