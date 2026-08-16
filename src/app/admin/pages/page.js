@@ -9,16 +9,17 @@ export default function ManagePages() {
   const [editingId, setEditingId] = useState(null);
   const [editContent, setEditContent] = useState("");
 
-  useEffect(() => {
-    fetchPages();
-  }, []);
-
   const fetchPages = async () => {
     setLoading(true);
     const { data, error } = await supabase.from("pages").select("*").order("slug");
     if (!error && data) setPages(data);
     setLoading(false);
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchPages();
+  }, []);
 
   const handleEdit = (page) => {
     setEditingId(page.id);

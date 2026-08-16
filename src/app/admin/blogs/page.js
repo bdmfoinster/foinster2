@@ -14,11 +14,6 @@ export default function ManageBlogs() {
   const [date, setDate] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
-  useEffect(() => {
-    checkUser();
-    fetchBlogs();
-  }, []);
-
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -32,6 +27,12 @@ export default function ManageBlogs() {
     if (!error && data) setBlogs(data);
     setLoading(false);
   };
+
+  useEffect(() => {
+    checkUser();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchBlogs();
+  }, []);
 
   const handleAddBlog = async (e) => {
     e.preventDefault();

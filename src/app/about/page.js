@@ -134,13 +134,13 @@ export default function AboutPage() {
             <motion.p variants={fadeUp} className="text-sm uppercase tracking-widest text-burgundy mb-8">Founder, KVH Foinster</motion.p>
             <motion.div variants={fadeUp} className="space-y-6 text-charcoal/80 font-light leading-relaxed text-lg">
               <p>
-                "We transform complex visions into architectural landmarks. Guided by a decade of architectural excellence, KVH Foinster is driven by a steadfast commitment to quality and innovation."
+                &quot;We transform complex visions into architectural landmarks. Guided by a decade of architectural excellence, KVH Foinster is driven by a steadfast commitment to quality and innovation.&quot;
               </p>
               <p>
-                "Under our unique design approach, we merge traditional Kerala aesthetics with international engineering standards. My expertise ensures that every project—from private residences to grand commercial landmarks—is delivered with technical perfection and a deep respect for local heritage."
+                &quot;Under our unique design approach, we merge traditional Kerala aesthetics with international engineering standards. My expertise ensures that every project—from private residences to grand commercial landmarks—is delivered with technical perfection and a deep respect for local heritage.&quot;
               </p>
               <p>
-                "At KVH Foinster, we don't just build structures; we deliver projects that stand the test of time and elevate the lifestyle of our clients."
+                &quot;At KVH Foinster, we don&apos;t just build structures; we deliver projects that stand the test of time and elevate the lifestyle of our clients.&quot;
               </p>
             </motion.div>
           </motion.div>

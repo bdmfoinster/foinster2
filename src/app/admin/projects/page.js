@@ -11,11 +11,6 @@ export default function ManageProjects() {
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  useEffect(() => {
-    checkUser();
-    fetchProjects();
-  }, []);
-
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -29,6 +24,12 @@ export default function ManageProjects() {
     if (!error && data) setProjects(data);
     setLoading(false);
   };
+
+  useEffect(() => {
+    checkUser();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchProjects();
+  }, []);
 
   const handleAddProject = async (e) => {
     e.preventDefault();

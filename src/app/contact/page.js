@@ -20,7 +20,7 @@ export default function ContactPage() {
       <section className="container-custom px-6 md:px-12 lg:px-24 mb-20 text-center">
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto">
           <motion.h1 variants={fadeUp} className="text-h1 text-charcoal mb-8">
-            Let's Talk
+            Let&apos;s Talk
           </motion.h1>
           <motion.p variants={fadeUp} className="text-lg md:text-2xl text-charcoal/70 font-light leading-relaxed">
             Reach out to discuss your architectural vision, interior design project, or turnkey construction needs.
