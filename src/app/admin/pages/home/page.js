@@ -126,10 +126,10 @@ export default function ManageHomePage() {
   if (loading) return <div className="p-8">Loading content...</div>;
 
   return (
-    <div className="max-w-4xl">
-      <h1 className="text-2xl font-bold mb-6 text-charcoal">Manage Home Page</h1>
+    <div className="max-w-4xl mx-auto p-4 md:p-6 lg:p-8">
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-charcoal">Manage Home Page</h1>
       
-      <form onSubmit={handleSave} className="space-y-8">
+      <form onSubmit={handleSave} className="space-y-6 md:space-y-8">
         
         {/* HERO SECTION */}
         <div className="bg-white p-6 rounded shadow border border-gray-200">
@@ -152,9 +152,12 @@ export default function ManageHomePage() {
             <div>
               <label className="block text-sm font-medium mb-2">Hero Stats</label>
               {heroStats.map((stat, i) => (
-                <div key={i} className="flex gap-2 mb-2">
-                  <input type="text" placeholder="Value (e.g. 15+)" value={stat.value} onChange={(e) => handleStatChange(i, 'value', e.target.value)} className="w-1/3 border p-2 rounded" />
-                  <input type="text" placeholder="Label (e.g. Years Experience)" value={stat.label} onChange={(e) => handleStatChange(i, 'label', e.target.value)} className="w-2/3 border p-2 rounded" />
+                <div key={i} className="flex flex-col sm:flex-row gap-2 mb-3">
+                  <input type="text" placeholder="Value (e.g. 15+)" value={stat.value} onChange={(e) => handleStatChange(i, 'value', e.target.value)} className="w-full sm:w-1/3 border p-2 rounded" />
+                  <div className="flex gap-2 w-full sm:w-2/3">
+                    <input type="text" placeholder="Label (e.g. Years Experience)" value={stat.label} onChange={(e) => handleStatChange(i, 'label', e.target.value)} className="w-full border p-2 rounded" />
+                    <button type="button" onClick={() => setHeroStats(heroStats.filter((_, idx) => idx !== i))} className="text-red-500 px-2 hover:bg-red-50 rounded bg-red-50/50">X</button>
+                  </div>
                 </div>
               ))}
               <button type="button" onClick={() => setHeroStats([...heroStats, { label: "", value: "" }])} className="text-sm text-primary">+ Add Stat</button>
@@ -179,7 +182,7 @@ export default function ManageHomePage() {
               {formData.about_image_url_existing && <img src={formData.about_image_url_existing} alt="About" className="h-32 mb-2 rounded" />}
               <input type="file" accept="image/*" onChange={(e) => setAboutImage(e.target.files[0])} className="w-full border p-2 rounded" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Vision Card Title</label>
                 <input type="text" name="about_vision_title" value={formData.about_vision_title} onChange={handleInputChange} className="w-full border p-2 rounded" />
@@ -193,19 +196,19 @@ export default function ManageHomePage() {
         </div>
         
         {/* SERVICES SECTION */}
-        <div className="bg-white p-6 rounded shadow border border-gray-200">
-          <h2 className="text-xl font-semibold mb-4 text-primary">Core Services</h2>
+        <div className="bg-white p-4 md:p-6 rounded shadow border border-gray-200">
+          <h2 className="text-lg md:text-xl font-semibold mb-4 text-primary">Core Services</h2>
           <div className="space-y-4">
             {services.map((service, i) => (
-              <div key={i} className="flex gap-2 p-3 border rounded">
-                <div className="flex-1 space-y-2">
-                  <input type="text" placeholder="Service Title" value={service.title} onChange={(e) => handleServiceChange(i, 'title', e.target.value)} className="w-full border p-2 rounded text-sm" />
-                  <textarea placeholder="Service Description" rows="2" value={service.desc} onChange={(e) => handleServiceChange(i, 'desc', e.target.value)} className="w-full border p-2 rounded text-sm"></textarea>
+              <div key={i} className="flex gap-3 p-3 md:p-4 border rounded bg-gray-50/50 items-start">
+                <div className="flex-1 space-y-3">
+                  <input type="text" placeholder="Service Title" value={service.title} onChange={(e) => handleServiceChange(i, 'title', e.target.value)} className="w-full border p-2 rounded text-sm bg-white" />
+                  <textarea placeholder="Service Description" rows="2" value={service.desc} onChange={(e) => handleServiceChange(i, 'desc', e.target.value)} className="w-full border p-2 rounded text-sm bg-white"></textarea>
                 </div>
-                <button type="button" onClick={() => setServices(services.filter((_, idx) => idx !== i))} className="text-red-500 px-2">X</button>
+                <button type="button" onClick={() => setServices(services.filter((_, idx) => idx !== i))} className="text-red-500 px-3 py-1 hover:bg-red-100 rounded bg-red-50 transition-colors">X</button>
               </div>
             ))}
-            <button type="button" onClick={() => setServices([...services, { title: "", desc: "" }])} className="text-sm text-primary">+ Add Service</button>
+            <button type="button" onClick={() => setServices([...services, { title: "", desc: "" }])} className="text-sm font-medium text-primary hover:underline">+ Add Service</button>
           </div>
         </div>
 
