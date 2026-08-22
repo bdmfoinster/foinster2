@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, CheckCircle, ChevronRight, Phone } from "lucide-react";
@@ -21,14 +22,64 @@ const staggerContainer = {
 };
 
 export default function Home() {
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchHomeContent() {
+      try {
+        const res = await fetch('/api/homepage');
+        const json = await res.json();
+        if (json.success && json.data) {
+          setContent(json.data);
+        }
+      } catch (e) {
+        console.error("Failed to fetch homepage content", e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchHomeContent();
+  }, []);
+
+  if (loading) {
+    return <div className="bg-cream min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  // Fallback defaults if content not found
+  const data = content || {
+    hero_title: "Crafted by many hands,\nperfected with one vision.",
+    hero_description: "We transform complex visions into architectural landmarks. Based in Kerala, KVH Foinster is a premier multidisciplinary firm merging traditional aesthetics with international engineering standards.",
+    hero_stats: [
+      { label: "Years Experience", value: "15+" },
+      { label: "Projects", value: "200+" },
+      { label: "Reach", value: "Global Reach" }
+    ],
+    about_title: "Transforming complex visions into architectural landmarks.",
+    about_description: "Guided by a decade of architectural excellence, KVH Foinster is driven by a steadfast commitment to quality and innovation. Under the visionary leadership of our CEO, Mr. Khaja Hussain, we deliver projects that stand the test of time.\n\nFrom intimate private residences to grand commercial landmarks, his expertise ensures that every project is delivered with technical perfection and a deep respect for local heritage, elevating the lifestyle of our clients.",
+    about_vision_title: "Our Vision",
+    about_vision_desc: "To redefine modern living through timeless design.",
+    hero_image_url: "/hero.png",
+    about_image_url: "/interior.png",
+    services: [
+      { title: "Architectural Design", desc: "Concept development for homes, apartments, and commercial hubs with 3D visualizations." },
+      { title: "Turnkey Civil Construction", desc: "Full-scale project execution with expert supervision, ensuring on-time delivery." },
+      { title: "Interior Design & Execution", desc: "Bespoke interiors for luxury and functionality, defining the inner space." },
+      { title: "Renovation & Retrofitting", desc: "Revitalizing and modernizing older structures to breathe new life." }
+    ],
+    contact_title: "Ready to transform your space?",
+    contact_description: "Schedule a consultation with our lead architects to discuss your vision, requirements, and how we can bring your next project to life.",
+    contact_phone: "+917560870124"
+  };
+
   return (
     <div className="bg-cream min-h-screen">
       {/* 1. Hero Banner */}
       <section className="relative min-h-[100dvh] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="/hero.png" 
-            alt="Cinematic architecture space" 
+            src={data.hero_image_url || "/hero.png"} 
+            alt="Hero Background" 
             fill 
             priority
             className="object-cover scale-105 motion-safe:animate-[pulse_10s_ease-in-out_infinite]"
@@ -47,15 +98,15 @@ export default function Home() {
           >
             <motion.h1 
               variants={fadeUp}
-              className="text-hero text-ivory mb-6"
+              className="text-hero text-ivory mb-6 whitespace-pre-line"
             >
-              Crafted by many hands,<br/>perfected with one vision.
+              {data.hero_title}
             </motion.h1>
             <motion.p 
               variants={fadeUp}
-              className="text-lg md:text-xl text-sand/90 font-light max-w-2xl mb-12 leading-relaxed"
+              className="text-lg md:text-xl text-sand/90 font-light max-w-2xl mb-12 leading-relaxed whitespace-pre-line"
             >
-              We transform complex visions into architectural landmarks. Based in Kerala, KVH Foinster is a premier multidisciplinary firm merging traditional aesthetics with international engineering standards.
+              {data.hero_description}
             </motion.p>
             
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-16">
@@ -69,11 +120,14 @@ export default function Home() {
             </motion.div>
 
             <motion.div variants={fadeUp} className="flex flex-wrap items-center gap-4 text-xs tracking-widest text-sand uppercase">
-              <span>15+ Years Experience</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-burgundy"></span>
-              <span>200+ Projects</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-burgundy"></span>
-              <span>Global Reach</span>
+              {data.hero_stats && data.hero_stats.map((stat, idx) => (
+                <div key={idx} className="flex items-center gap-4">
+                  <span>{stat.value} {stat.label}</span>
+                  {idx < data.hero_stats.length - 1 && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-burgundy"></span>
+                  )}
+                </div>
+              ))}
             </motion.div>
           </motion.div>
         </div>
@@ -97,15 +151,10 @@ export default function Home() {
                 <h4 className="text-sm uppercase tracking-widest text-burgundy font-medium">About Us</h4>
               </motion.div>
               <motion.h2 variants={fadeUp} className="text-h2 text-charcoal mb-8">
-                Transforming complex visions into architectural landmarks.
+                {data.about_title}
               </motion.h2>
-              <motion.div variants={fadeUp} className="space-y-6 text-charcoal/70 font-light leading-relaxed">
-                <p>
-                  Guided by a decade of architectural excellence, KVH Foinster is driven by a steadfast commitment to quality and innovation. Under the visionary leadership of our CEO, Mr. Khaja Hussain, we deliver projects that stand the test of time.
-                </p>
-                <p>
-                  From intimate private residences to grand commercial landmarks, his expertise ensures that every project is delivered with technical perfection and a deep respect for local heritage, elevating the lifestyle of our clients.
-                </p>
+              <motion.div variants={fadeUp} className="space-y-6 text-charcoal/70 font-light leading-relaxed whitespace-pre-line">
+                <p>{data.about_description}</p>
               </motion.div>
               <motion.div variants={fadeUp} className="mt-10">
                 <Link href="/about" className="inline-block border-b border-charcoal pb-1 text-sm uppercase tracking-widest hover:text-primary hover:border-primary transition-colors duration-300">
@@ -122,11 +171,11 @@ export default function Home() {
               className="relative"
             >
               <div className="relative aspect-[4/5] w-full rounded-tr-[80px] rounded-bl-[80px] overflow-hidden shadow-premium">
-                <Image src="/interior.png" alt="Elegant Interior" fill className="object-cover" />
+                <Image src={data.about_image_url || "/interior.png"} alt="Elegant Interior" fill className="object-cover" />
               </div>
               <div className="absolute -bottom-8 -left-8 md:-bottom-12 md:-left-12 bg-cream p-8 md:p-12 shadow-premium rounded-tl-[40px] rounded-br-[40px] max-w-[280px]">
-                <h3 className="text-card-title text-charcoal mb-3">Our Vision</h3>
-                <p className="text-sm text-charcoal/70 font-light">To redefine modern living through timeless design.</p>
+                <h3 className="text-card-title text-charcoal mb-3">{data.about_vision_title}</h3>
+                <p className="text-sm text-charcoal/70 font-light">{data.about_vision_desc}</p>
               </div>
             </motion.div>
           </div>
@@ -228,12 +277,7 @@ export default function Home() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { title: "Architectural Design", desc: "Concept development for homes, apartments, and commercial hubs with 3D visualizations." },
-              { title: "Turnkey Civil Construction", desc: "Full-scale project execution with expert supervision, ensuring on-time delivery." },
-              { title: "Interior Design & Execution", desc: "Bespoke interiors for luxury and functionality, defining the inner space." },
-              { title: "Renovation & Retrofitting", desc: "Revitalizing and modernizing older structures to breathe new life." }
-            ].map((service, idx) => (
+            {data.services && data.services.map((service, idx) => (
               <motion.div 
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
@@ -274,13 +318,13 @@ export default function Home() {
             
             <div className="relative z-10">
               <h2 className="text-h2 text-charcoal mb-6">
-                Ready to transform your space?
+                {data.contact_title}
               </h2>
-              <p className="text-charcoal/70 font-light mb-12 max-w-xl mx-auto">
-                Schedule a consultation with our lead architects to discuss your vision, requirements, and how we can bring your next project to life.
+              <p className="text-charcoal/70 font-light mb-12 max-w-xl mx-auto whitespace-pre-line">
+                {data.contact_description}
               </p>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <a href="tel:+917560870124" className="w-full sm:w-auto flex items-center justify-center gap-3 bg-primary text-ivory px-10 py-4 text-sm uppercase tracking-widest hover:bg-charcoal transition-colors duration-300 rounded-sm shadow-lg">
+                <a href={`tel:${data.contact_phone}`} className="w-full sm:w-auto flex items-center justify-center gap-3 bg-primary text-ivory px-10 py-4 text-sm uppercase tracking-widest hover:bg-charcoal transition-colors duration-300 rounded-sm shadow-lg">
                   <Phone size={18} />
                   Call Now
                 </a>
