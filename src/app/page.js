@@ -23,23 +23,34 @@ const staggerContainer = {
 
 export default function Home() {
   const [content, setContent] = useState(null);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchHomeContent() {
+    async function fetchData() {
       try {
-        const res = await fetch('/api/homepage');
-        const json = await res.json();
-        if (json.success && json.data) {
-          setContent(json.data);
+        const [homeRes, projRes] = await Promise.all([
+          fetch('/api/homepage'),
+          fetch('/api/projects')
+        ]);
+        
+        const homeJson = await homeRes.json();
+        if (homeJson.success && homeJson.data) {
+          setContent(homeJson.data);
+        }
+        
+        const projJson = await projRes.json();
+        if (projJson.success && projJson.data) {
+          // get latest 4 projects
+          setProjects(projJson.data.slice(0, 4));
         }
       } catch (e) {
-        console.error("Failed to fetch homepage content", e);
+        console.error("Failed to fetch data", e);
       } finally {
         setLoading(false);
       }
     }
-    fetchHomeContent();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -213,18 +224,9 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
-            {[
-              { img: "/residential.png", cat: "Residential", title: "Modern & Traditional Villas" },
-              { img: "/commercial.png", cat: "Commercial", title: "Contemporary Developments" },
-              { img: "/hero.png", cat: "Convention Centers", title: "Elevations & Hall Layouts" },
-              { img: "/interior.png", cat: "Premium Interiors", title: "Residential & Commercial" },
-              { img: "/residential.png", cat: "Residential", title: "Luxury Hillside Villa" },
-              { img: "/commercial.png", cat: "Commercial", title: "Meridian HQ Plaza" },
-              { img: "/hero.png", cat: "Convention Centers", title: "Emerald Convention Center" },
-              { img: "/interior.png", cat: "Premium Interiors", title: "Executive Office Suite" }
-            ].map((project, idx) => (
+            {projects.length > 0 ? projects.map((project, idx) => (
               <motion.div 
-                key={idx}
+                key={project.id || idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: (idx % 2) * 0.2 }}
@@ -233,7 +235,7 @@ export default function Home() {
               >
                 <div className="relative overflow-hidden w-full aspect-[4/3] mb-6 shadow-sm group-hover:shadow-md transition-shadow duration-500">
                   <Image 
-                    src={project.img} 
+                    src={project.image_url || "/residential.png"} 
                     alt={project.title} 
                     fill 
                     className="object-cover transition-transform duration-1000 group-hover:scale-105" 
@@ -242,14 +244,18 @@ export default function Home() {
                 
                 <div className="flex flex-col items-center">
                   <span className="text-[10px] uppercase tracking-widest text-primary mb-2">
-                    {project.cat}
+                    {project.category}
                   </span>
                   <h3 className="text-sm tracking-wide text-charcoal/90 text-center transition-colors duration-300 group-hover:text-primary">
                     {project.title}
                   </h3>
                 </div>
               </motion.div>
-            ))}
+            )) : (
+              <div className="col-span-1 md:col-span-2 text-center text-charcoal/60 py-10">
+                No featured projects yet. Add some in the Admin Panel!
+              </div>
+            )}
           </div>
         </div>
       </section>
