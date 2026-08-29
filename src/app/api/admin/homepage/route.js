@@ -23,6 +23,13 @@ export async function POST(request) {
 
     const heroImageFile = formData.get('hero_image');
     const aboutImageFile = formData.get('about_image');
+    
+    // NEW: Handle extended settings
+    let extendedSettings = {};
+    const extendedSettingsStr = formData.get('extended_settings');
+    try { if (extendedSettingsStr) extendedSettings = JSON.parse(extendedSettingsStr); } catch (e) {}
+    
+    const contactBgImageFile = formData.get('contact_bg_image');
 
     // Upload hero image if new file is provided
     if (heroImageFile && typeof heroImageFile !== 'string') {
@@ -56,6 +63,22 @@ export async function POST(request) {
       }
     }
     
+    // Upload contact background image if new file is provided
+    if (contactBgImageFile && typeof contactBgImageFile !== 'string') {
+      const fileExt = contactBgImageFile.name.split('.').pop();
+      const fileName = `contact_bg_${Date.now()}.${fileExt}`;
+      const { error: uploadError } = await supabaseAdmin.storage
+        .from('images')
+        .upload(`homepage/${fileName}`, contactBgImageFile);
+        
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabaseAdmin.storage
+          .from('images')
+          .getPublicUrl(`homepage/${fileName}`);
+        extendedSettings.contactBgImage = publicUrl;
+      }
+    }
+    
     let heroStats = [];
     try { if (heroStatsStr) heroStats = JSON.parse(heroStatsStr); } catch (e) {}
 
@@ -76,6 +99,7 @@ export async function POST(request) {
       contact_title: contactTitle,
       contact_description: contactDescription,
       contact_phone: contactPhone,
+      extended_settings: extendedSettings
     };
 
     // Check if row exists

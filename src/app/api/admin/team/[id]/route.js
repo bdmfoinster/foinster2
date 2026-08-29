@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function PUT(request, { params }) {
   try {
-    const id = params.id;
+    const { id } = await params;
     const formData = await request.formData();
     
     // Check if it's a reorder action or status toggle which might send limited data
@@ -71,7 +71,7 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const id = params.id;
+    const { id } = await params;
     
     const { error } = await supabaseAdmin
       .from('team_members')
