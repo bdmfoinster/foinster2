@@ -10,6 +10,7 @@ export default function ManageProjects() {
   const [category, setCategory] = useState("Residential");
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [editingId, setEditingId] = useState(null);
 
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -33,7 +34,7 @@ export default function ManageProjects() {
 
   const handleAddProject = async (e) => {
     e.preventDefault();
-    if (!imageFile) {
+    if (!editingId && !imageFile) {
       alert("Please select an image file first.");
       return;
     }
@@ -50,11 +51,15 @@ export default function ManageProjects() {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('category', category);
-      formData.append('file', imageFile);
+      if (imageFile) {
+        formData.append('file', imageFile);
+      }
 
-      // 3. Save project to database using API route to bypass RLS
-      const response = await fetch('/api/admin/projects', {
-        method: 'POST',
+      const url = editingId ? `/api/admin/projects/${editingId}` : '/api/admin/projects';
+      const method = editingId ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         body: formData,
       });
 
@@ -64,15 +69,29 @@ export default function ManageProjects() {
         throw new Error(result.error || 'Failed to save project');
       }
 
-      setTitle("");
-      setImageFile(null);
+      resetForm();
       fetchProjects();
-      alert("Project added successfully!");
+      alert(editingId ? "Project updated successfully!" : "Project added successfully!");
     } catch (error) {
-      alert("Error adding project: " + error.message);
+      alert("Error saving project: " + error.message);
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const resetForm = () => {
+    setTitle("");
+    setCategory("Residential");
+    setImageFile(null);
+    setEditingId(null);
+  };
+
+  const handleEditClick = (project) => {
+    setEditingId(project.id);
+    setTitle(project.title);
+    setCategory(project.category);
+    setImageFile(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (project) => {
@@ -85,8 +104,11 @@ export default function ManageProjects() {
       await supabase.storage.from('images').remove([filePath]);
     }
 
-    const { error } = await supabase.from("projects").delete().eq("id", project.id);
-    if (!error) {
+    const response = await fetch(`/api/admin/projects/${project.id}`, {
+      method: 'DELETE'
+    });
+    
+    if (response.ok) {
       fetchProjects();
     } else {
       alert("Error deleting project.");
@@ -97,8 +119,11 @@ export default function ManageProjects() {
     <div>
       <h1 className="text-2xl font-bold mb-6 text-charcoal">Manage Projects</h1>
       
-      <div className="bg-white p-6 rounded shadow border border-gray-200 mb-8">
-        <h2 className="text-lg font-semibold mb-4">Add New Project</h2>
+      <div className="bg-white p-6 rounded shadow border border-gray-200 mb-8 relative">
+        {editingId && (
+          <button onClick={resetForm} className="absolute top-6 right-6 text-sm text-gray-500 hover:text-gray-700">Cancel Edit</button>
+        )}
+        <h2 className="text-lg font-semibold mb-4">{editingId ? "Edit Project" : "Add New Project"}</h2>
         <form onSubmit={handleAddProject} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -116,17 +141,17 @@ export default function ManageProjects() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Project Image File</label>
+            <label className="block text-sm font-medium mb-1">{editingId ? "Change Project Image (Leave blank to keep current)" : "Project Image File *"}</label>
             <input 
               type="file" 
               accept="image/*"
-              required 
+              required={!editingId}
               onChange={(e) => setImageFile(e.target.files[0])} 
               className="w-full border p-2 rounded bg-gray-50" 
             />
           </div>
           <button type="submit" disabled={isUploading} className="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary/90 disabled:opacity-50">
-            {isUploading ? "Uploading & Saving..." : "Add Project"}
+            {isUploading ? "Uploading & Saving..." : (editingId ? "Save Changes" : "Add Project")}
           </button>
         </form>
       </div>
@@ -153,6 +178,7 @@ export default function ManageProjects() {
                   <td className="p-4">{p.category}</td>
                   <td className="p-4"><img src={p.image_url} alt={p.title} className="w-16 h-16 object-cover rounded" /></td>
                   <td className="p-4">
+                    <button onClick={() => handleEditClick(p)} className="text-blue-500 hover:text-blue-700 text-sm font-medium mr-3">Edit</button>
                     <button onClick={() => handleDelete(p)} className="text-red-500 hover:text-red-700 text-sm font-medium">Delete</button>
                   </td>
                 </tr>
