@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { 
@@ -37,32 +38,6 @@ const steps = [
   { icon: Wrench, title: "Maintenance Support", timeline: "Step 13", desc: "Ongoing support to preserve the quality and longevity of the build." }
 ];
 
-const teamMembers = [
-  { name: "Faisal Babu", role: "Executive Director", image: "/team/Faisal Babu - Executive Director.jpg" },
-  { name: "Khaja Hussain", role: "CEO", image: "/team/Khaja hussain - CEO.jpg" },
-  { name: "Shanib", role: "BDM", image: "/team/Shanib - BDM.jpg" },
-  { name: "Rahul", role: "Design Manager", image: "/team/Rahul - Design Manager.jpg" },
-  { name: "Anjana", role: "Accounts Manager", image: "/team/Anjana - Accounts Manager.jpg" },
-  { name: "Athira", role: "HR Executive", image: "/team/Athira - HR Executive.jpg" },
-  { name: "Sukanya", role: "CRM", image: "/team/Sukanya - CRM.jpg" },
-  { name: "Kadeeja Shaibi", role: "Architect", image: "/team/Kadeeja Shaibi - Architect.jpg" },
-  { name: "Sooraj", role: "Senior Designer", image: "/team/Sooraj - Senior Designer.jpg" },
-  { name: "Adhil", role: "Junior Designer", image: "/team/Adhil - Junior Designer.jpg" },
-  { name: "Fayas", role: "Junior Designer", image: "/team/Fayas - Junior Designer.jpg" },
-  { name: "Junaid", role: "3D Visualizer", image: "/team/Junaid - 3D Visualizer.jpg" },
-  { name: "Unni Mohandas", role: "3D Visualizer", image: "/team/Unni Mohandas - 3D Visualizer.jpg" },
-  { name: "Shifana", role: "2D Detailer", image: "/team/Shifana - 2D Detailer.jpg" },
-  { name: "Noushad", role: "Senior Accountant", image: "/team/Noushad - Senior Accountant.jpg" },
-  { name: "Akhil", role: "Site Supervisor", image: "/team/Akhil - Site Supervisor.jpg" },
-  { name: "Goutham", role: "Site Supervisor", image: "/team/Goutham - Site Supervisor.jpg" },
-  { name: "Murshid", role: "Site Supervisor", image: "/team/Murshid - Site Supervisor.jpg" },
-  { name: "Shamil", role: "Site Supervisor", image: "/team/Shamil - Site supervisor.jpg" },
-  { name: "Swalih", role: "Site Supervisor", image: "/team/Swalih - Site Supervisor.jpg" },
-  { name: "Mubasheer", role: "Project Manager", image: "/team/Mubasheer - Project Manager.jpeg", description: "Expertly coordinates complex architectural projects from inception to execution. Ensures seamless client communication, rigorous scheduling, and strict quality control across multidisciplinary teams." },
-  { name: "Abhijith", role: "Design Trainee", image: "/team/Abhijith - Design Trainee.jpeg", description: "Assists senior architects in conceptual drafting and comprehensive design development. Specializes in advanced CAD/BIM workflows while maintaining a strong commitment to continuous learning and technical documentation." },
-  { name: "Sibindas", role: "Design Trainee", image: "/team/Sibindas - Design Trainee.jpeg", description: "Supports the design team with precise architectural drafting and project visualization. Actively applies CAD/BIM techniques to assist in design development and technical documentation while focused on continuous professional growth." }
-];
-
 const TeamCard = ({ member }) => (
   <motion.div 
     variants={fadeUp}
@@ -87,6 +62,26 @@ const TeamCard = ({ member }) => (
 );
 
 export default function AboutPage() {
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const response = await fetch('/api/team');
+        const data = await response.json();
+        if (response.ok) {
+          setTeamMembers(data);
+        }
+      } catch (error) {
+        console.error('Failed to load team members:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTeam();
+  }, []);
+
   return (
     <div className="bg-cream min-h-screen pt-32 pb-24">
       {/* 1. Hero & About Us */}
@@ -201,17 +196,23 @@ export default function AboutPage() {
             </motion.p>
           </motion.div>
           
-          <motion.div 
-            initial="hidden" 
-            whileInView="visible" 
-            viewport={{ once: true, margin: "-50px" }} 
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-          >
-            {teamMembers.map((member, index) => (
-              <TeamCard key={index} member={member} />
-            ))}
-          </motion.div>
+          {loading ? (
+            <div className="text-center w-full py-12 text-charcoal/50">Loading team members...</div>
+          ) : teamMembers.length === 0 ? (
+            <div className="text-center w-full py-12 text-charcoal/50">Our team is currently being updated. Please check back later.</div>
+          ) : (
+            <motion.div 
+              initial="hidden" 
+              whileInView="visible" 
+              viewport={{ once: true, margin: "-50px" }} 
+              variants={staggerContainer}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+            >
+              {teamMembers.map((member, index) => (
+                <TeamCard key={member.id || index} member={member} />
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
 

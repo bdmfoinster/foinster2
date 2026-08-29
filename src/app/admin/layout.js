@@ -7,6 +7,7 @@ export default function AdminLayout({ children }) {
           <a href="/admin/pages" className="block py-2 px-4 rounded hover:bg-white/10 transition-colors">Pages</a>
           <a href="/admin/projects" className="block py-2 px-4 rounded hover:bg-white/10 transition-colors">Projects</a>
           <a href="/admin/blogs" className="block py-2 px-4 rounded hover:bg-white/10 transition-colors">Blogs</a>
+          <a href="/admin/team" className="block py-2 px-4 rounded hover:bg-white/10 transition-colors">Meet Our Team</a>
         </nav>
       </aside>
       <main className="flex-1 p-8">

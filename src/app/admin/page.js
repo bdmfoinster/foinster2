@@ -43,6 +43,12 @@ export default function AdminDashboard() {
           <p className="text-sm text-gray-500 mb-4">Write new blog posts and manage existing ones.</p>
           <button onClick={() => router.push('/admin/blogs')} className="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary/90">Manage Blogs</button>
         </div>
+        
+        <div className="bg-white p-6 rounded shadow border border-gray-200">
+          <h3 className="text-xl font-semibold mb-2">Meet Our Team</h3>
+          <p className="text-sm text-gray-500 mb-4">Manage team members on the About page.</p>
+          <button onClick={() => router.push('/admin/team')} className="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary/90">Manage Team</button>
+        </div>
       </div>
     </div>
   );
