@@ -58,6 +58,8 @@ export default function ManageHomePage() {
     { title: "Turnkey Civil Construction", desc: "Full-scale project execution..." }
   ]);
 
+  const [featuredProjects, setFeaturedProjects] = useState([]);
+
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
@@ -87,6 +89,9 @@ export default function ManageHomePage() {
       });
       if (data.extended_settings) {
         setExtendedSettings(prev => ({ ...prev, ...data.extended_settings }));
+        if (data.extended_settings.featured_projects) {
+          setFeaturedProjects(data.extended_settings.featured_projects);
+        }
       }
       if (data.hero_stats && Array.isArray(data.hero_stats)) setHeroStats(data.hero_stats);
       if (data.services && Array.isArray(data.services)) setServices(data.services);
@@ -124,6 +129,22 @@ export default function ManageHomePage() {
     setServices(newServices);
   };
 
+  const handleFeaturedProjectChange = (index, field, value) => {
+    const newFp = [...featuredProjects];
+    newFp[index][field] = value;
+    setFeaturedProjects(newFp);
+  };
+
+  const handleFeaturedProjectFile = (index, file) => {
+    const newFp = [...featuredProjects];
+    newFp[index].file = file;
+    // Create a local preview
+    if (file) {
+      newFp[index].preview = URL.createObjectURL(file);
+    }
+    setFeaturedProjects(newFp);
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setIsSaving(true);
@@ -136,11 +157,27 @@ export default function ManageHomePage() {
       
       payload.append("hero_stats", JSON.stringify(heroStats));
       payload.append("services", JSON.stringify(services));
-      payload.append("extended_settings", JSON.stringify(extendedSettings));
+      
+      const fpDataToSave = featuredProjects.map(fp => ({
+        title: fp.title,
+        category: fp.category,
+        image_url: fp.image_url
+      }));
+      
+      payload.append("extended_settings", JSON.stringify({
+        ...extendedSettings,
+        featured_projects: fpDataToSave
+      }));
       
       if (heroImage) payload.append("hero_image", heroImage);
       if (aboutImage) payload.append("about_image", aboutImage);
       if (contactBgImage) payload.append("contact_bg_image", contactBgImage);
+      
+      featuredProjects.forEach((fp, index) => {
+        if (fp.file) {
+          payload.append(`featured_project_image_${index}`, fp.file);
+        }
+      });
       
       const response = await fetch("/api/admin/homepage", {
         method: "POST",
@@ -295,6 +332,39 @@ export default function ManageHomePage() {
             <div>
               <label className="block text-sm font-medium mb-1">CTA Link URL</label>
               <input type="text" name="projectsCtaUrl" value={extendedSettings.projectsCtaUrl} onChange={handleExtendedChange} className="w-full border p-2 rounded" />
+            </div>
+          </div>
+          
+          <div className="mt-6 border-t pt-6">
+            <h3 className="font-semibold text-lg mb-4 text-primary">Custom Featured Projects</h3>
+            <p className="text-sm text-gray-500 mb-4">If you leave this empty, the latest 4 projects from the Projects tab will be shown.</p>
+            
+            <div className="space-y-4">
+              {featuredProjects.map((fp, i) => (
+                <div key={i} className="border p-4 rounded bg-gray-50 relative">
+                  <button type="button" onClick={() => setFeaturedProjects(featuredProjects.filter((_, idx) => idx !== i))} className="absolute top-4 right-4 text-red-500 hover:text-red-700 font-bold bg-white px-2 py-1 rounded shadow">X</button>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-xs font-medium mb-1">Project Title</label>
+                      <input type="text" value={fp.title || ""} onChange={(e) => handleFeaturedProjectChange(i, 'title', e.target.value)} className="w-full border p-2 rounded text-sm bg-white" placeholder="e.g. Modern Villa" />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-medium mb-1">Category</label>
+                      <input type="text" value={fp.category || ""} onChange={(e) => handleFeaturedProjectChange(i, 'category', e.target.value)} className="w-full border p-2 rounded text-sm bg-white" placeholder="e.g. Residential" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium mb-1">Project Image</label>
+                    <div className="flex gap-4 items-center">
+                      {(fp.preview || fp.image_url) && (
+                        <img src={fp.preview || fp.image_url} alt="Preview" className="h-16 w-24 object-cover rounded shadow" />
+                      )}
+                      <input type="file" accept="image/*" onChange={(e) => handleFeaturedProjectFile(i, e.target.files[0])} className="w-full border p-2 rounded text-sm bg-white" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <button type="button" onClick={() => setFeaturedProjects([...featuredProjects, { title: "", category: "", image_url: "", file: null }])} className="text-sm font-medium text-primary hover:underline bg-primary/10 px-4 py-2 rounded">+ Add Custom Featured Project</button>
             </div>
           </div>
         </div>

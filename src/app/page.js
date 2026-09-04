@@ -35,14 +35,21 @@ export default function Home() {
         ]);
         
         const homeJson = await homeRes.json();
+        let homeData = null;
         if (homeJson.success && homeJson.data) {
-          setContent(homeJson.data);
+          homeData = homeJson.data;
+          setContent(homeData);
         }
         
-        const projJson = await projRes.json();
-        if (projJson.success && projJson.data) {
-          // get latest 4 projects
-          setProjects(projJson.data.slice(0, 4));
+        // If we have custom featured projects in the homepage settings, use those instead
+        if (homeData && homeData.extended_settings && homeData.extended_settings.featured_projects && homeData.extended_settings.featured_projects.length > 0) {
+          setProjects(homeData.extended_settings.featured_projects);
+        } else {
+          const projJson = await projRes.json();
+          if (projJson.success && projJson.data) {
+            // get latest 4 projects
+            setProjects(projJson.data.slice(0, 4));
+          }
         }
       } catch (e) {
         console.error("Failed to fetch data", e);

@@ -79,6 +79,27 @@ export async function POST(request) {
       }
     }
     
+    // Upload featured project images
+    if (extendedSettings.featured_projects && Array.isArray(extendedSettings.featured_projects)) {
+      for (let i = 0; i < extendedSettings.featured_projects.length; i++) {
+        const fpFile = formData.get(`featured_project_image_${i}`);
+        if (fpFile && typeof fpFile !== 'string') {
+          const fileExt = fpFile.name.split('.').pop();
+          const fileName = `featured_project_${Date.now()}_${i}.${fileExt}`;
+          const { error: uploadError } = await supabaseAdmin.storage
+            .from('images')
+            .upload(`homepage/${fileName}`, fpFile);
+            
+          if (!uploadError) {
+            const { data: { publicUrl } } = supabaseAdmin.storage
+              .from('images')
+              .getPublicUrl(`homepage/${fileName}`);
+            extendedSettings.featured_projects[i].image_url = publicUrl;
+          }
+        }
+      }
+    }
+    
     let heroStats = [];
     try { if (heroStatsStr) heroStats = JSON.parse(heroStatsStr); } catch (e) {}
 
