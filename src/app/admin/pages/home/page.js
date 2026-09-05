@@ -280,7 +280,8 @@ export default function ManageHomePage() {
               <textarea name="about_description" rows="4" value={formData.about_description} onChange={handleInputChange} className="w-full border p-2 rounded"></textarea>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">About Side Image</label>
+              <label className="block text-sm font-medium mb-1 text-primary text-lg">About Section Image (Large Interior Image on the Right)</label>
+              <p className="text-xs text-gray-500 mb-2">This is the image displayed next to the "Transforming complex visions..." text.</p>
               {formData.about_image_url_existing && <img src={formData.about_image_url_existing} alt="About" className="h-32 mb-2 rounded" />}
               <input type="file" accept="image/*" onChange={(e) => setAboutImage(e.target.files[0])} className="w-full border p-2 rounded" />
             </div>
