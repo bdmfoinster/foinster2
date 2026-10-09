@@ -40,7 +40,7 @@ export default function ManageProjects() {
     }
 
     // Enforce 10 MB limit
-    if (imageFile.size > 10 * 1024 * 1024) {
+    if (imageFile && imageFile.size > 10 * 1024 * 1024) {
       alert("File size exceeds 10 MB. Please upload a smaller image.");
       return;
     }
