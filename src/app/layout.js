@@ -13,6 +13,9 @@ export const metadata = {
   metadataBase: new URL("https://www.foinster.com"),
   title: "FOINSTER ARCH | Premium Architecture & Interior Design",
   description: "Designing spaces with clarity, craft, and calm. We create timeless architecture, interiors, renovations, and turnkey solutions shaped by context, function, and elegance.",
+  verification: {
+    google: "oq8qdrih7djf0LhwKeel6nvWrAHgYQPlqvm7K1",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
