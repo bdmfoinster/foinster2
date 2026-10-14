@@ -10,8 +10,37 @@ const geist = Geist({
 });
 
 export const metadata = {
+  metadataBase: new URL("https://www.foinster.com"),
   title: "FOINSTER ARCH | Premium Architecture & Interior Design",
   description: "Designing spaces with clarity, craft, and calm. We create timeless architecture, interiors, renovations, and turnkey solutions shaped by context, function, and elegance.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
+  openGraph: {
+    title: "FOINSTER ARCH | Premium Architecture & Interior Design",
+    description: "Designing spaces with clarity, craft, and calm. We create timeless architecture, interiors, renovations, and turnkey solutions shaped by context, function, and elegance.",
+    url: "https://www.foinster.com",
+    siteName: "FOINSTER ARCH",
+    images: [
+      {
+        url: "/logo.png",
+        width: 2251,
+        height: 2000,
+        alt: "FOINSTER ARCH Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {
