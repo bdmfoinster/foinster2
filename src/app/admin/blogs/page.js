@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
+import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
 
 export default function ManageBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +14,8 @@ export default function ManageBlogs() {
   const [imageFile, setImageFile] = useState(null);
   const [date, setDate] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState("");
+  const fileInputRef = useRef(null);
 
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -41,45 +44,48 @@ export default function ManageBlogs() {
       return;
     }
 
-    // Enforce 10 MB limit
-    if (imageFile.size > 10 * 1024 * 1024) {
-      alert("File size exceeds 10 MB. Please upload a smaller image.");
+    if (imageFile.size > 25 * 1024 * 1024) {
+      alert("File size exceeds 25 MB. Please upload a smaller image.");
       return;
     }
 
     setIsUploading(true);
 
     try {
+      setUploadStatus("Optimizing image...");
+      const optimizedFile = await optimizeImage(imageFile);
+
       const formData = new FormData();
       formData.append('title', title);
       formData.append('excerpt', excerpt);
       formData.append('content', content);
       formData.append('date', date);
-      formData.append('file', imageFile);
+      formData.append('file', optimizedFile);
 
-      // 3. Save blog and upload image to database using API route to bypass RLS
+      setUploadStatus("Uploading blog post...");
+
       const response = await fetch('/api/admin/blogs', {
         method: 'POST',
         body: formData,
       });
 
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to save blog');
-      }
+      await safeFetchJson(response, 'Failed to save blog');
 
       setTitle("");
       setExcerpt("");
       setContent("");
       setImageFile(null);
       setDate("");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
       fetchBlogs();
       alert("Blog published successfully!");
     } catch (error) {
       alert("Error adding blog: " + error.message);
     } finally {
       setIsUploading(false);
+      setUploadStatus("");
     }
   };
 
@@ -128,6 +134,7 @@ export default function ManageBlogs() {
           <div>
             <label className="block text-sm font-medium mb-1">Blog Image File</label>
             <input 
+              ref={fileInputRef}
               type="file" 
               accept="image/*"
               required 
@@ -136,7 +143,7 @@ export default function ManageBlogs() {
             />
           </div>
           <button type="submit" disabled={isUploading} className="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary/90 disabled:opacity-50">
-            {isUploading ? "Uploading & Publishing..." : "Publish Blog"}
+            {isUploading ? (uploadStatus || "Publishing...") : "Publish Blog"}
           </button>
         </form>
       </div>

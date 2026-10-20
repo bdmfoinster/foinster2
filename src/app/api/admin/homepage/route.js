@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
+
 export async function POST(request) {
   try {
     const formData = await request.formData();
@@ -33,11 +36,15 @@ export async function POST(request) {
 
     // Upload hero image if new file is provided
     if (heroImageFile && typeof heroImageFile !== 'string') {
-      const fileExt = heroImageFile.name.split('.').pop();
+      const fileExt = heroImageFile.name ? heroImageFile.name.split('.').pop() : 'jpg';
       const fileName = `hero_${Date.now()}.${fileExt}`;
+      const buffer = Buffer.from(await heroImageFile.arrayBuffer());
       const { error: uploadError } = await supabaseAdmin.storage
         .from('images')
-        .upload(`homepage/${fileName}`, heroImageFile);
+        .upload(`homepage/${fileName}`, buffer, {
+          contentType: heroImageFile.type || 'image/jpeg',
+          upsert: true
+        });
         
       if (!uploadError) {
         const { data: { publicUrl } } = supabaseAdmin.storage
@@ -49,11 +56,15 @@ export async function POST(request) {
 
     // Upload about image if new file is provided
     if (aboutImageFile && typeof aboutImageFile !== 'string') {
-      const fileExt = aboutImageFile.name.split('.').pop();
+      const fileExt = aboutImageFile.name ? aboutImageFile.name.split('.').pop() : 'jpg';
       const fileName = `about_${Date.now()}.${fileExt}`;
+      const buffer = Buffer.from(await aboutImageFile.arrayBuffer());
       const { error: uploadError } = await supabaseAdmin.storage
         .from('images')
-        .upload(`homepage/${fileName}`, aboutImageFile);
+        .upload(`homepage/${fileName}`, buffer, {
+          contentType: aboutImageFile.type || 'image/jpeg',
+          upsert: true
+        });
         
       if (!uploadError) {
         const { data: { publicUrl } } = supabaseAdmin.storage
@@ -65,11 +76,15 @@ export async function POST(request) {
     
     // Upload contact background image if new file is provided
     if (contactBgImageFile && typeof contactBgImageFile !== 'string') {
-      const fileExt = contactBgImageFile.name.split('.').pop();
+      const fileExt = contactBgImageFile.name ? contactBgImageFile.name.split('.').pop() : 'jpg';
       const fileName = `contact_bg_${Date.now()}.${fileExt}`;
+      const buffer = Buffer.from(await contactBgImageFile.arrayBuffer());
       const { error: uploadError } = await supabaseAdmin.storage
         .from('images')
-        .upload(`homepage/${fileName}`, contactBgImageFile);
+        .upload(`homepage/${fileName}`, buffer, {
+          contentType: contactBgImageFile.type || 'image/jpeg',
+          upsert: true
+        });
         
       if (!uploadError) {
         const { data: { publicUrl } } = supabaseAdmin.storage
@@ -84,11 +99,15 @@ export async function POST(request) {
       for (let i = 0; i < extendedSettings.featured_projects.length; i++) {
         const fpFile = formData.get(`featured_project_image_${i}`);
         if (fpFile && typeof fpFile !== 'string') {
-          const fileExt = fpFile.name.split('.').pop();
+          const fileExt = fpFile.name ? fpFile.name.split('.').pop() : 'jpg';
           const fileName = `featured_project_${Date.now()}_${i}.${fileExt}`;
+          const buffer = Buffer.from(await fpFile.arrayBuffer());
           const { error: uploadError } = await supabaseAdmin.storage
             .from('images')
-            .upload(`homepage/${fileName}`, fpFile);
+            .upload(`homepage/${fileName}`, buffer, {
+              contentType: fpFile.type || 'image/jpeg',
+              upsert: true
+            });
             
           if (!uploadError) {
             const { data: { publicUrl } } = supabaseAdmin.storage

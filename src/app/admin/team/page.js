@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
+import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
 
 export default function ManageTeam() {
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState("");
+  const fileInputRef = useRef(null);
   
   const [isEditing, setIsEditing] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -50,6 +53,9 @@ export default function ManageTeam() {
     setIsActive(true);
     setDisplayOrder(teamMembers.length > 0 ? Math.max(...teamMembers.map(m => m.display_order)) + 1 : 1);
     setImageFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleEditClick = (member) => {
@@ -61,6 +67,9 @@ export default function ManageTeam() {
     setIsActive(member.is_active);
     setDisplayOrder(member.display_order);
     setImageFile(null); // Require new image if they want to change it
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -72,8 +81,8 @@ export default function ManageTeam() {
       return;
     }
 
-    if (imageFile && imageFile.size > 5 * 1024 * 1024) {
-      alert("File size exceeds 5 MB. Please upload a smaller image.");
+    if (imageFile && imageFile.size > 25 * 1024 * 1024) {
+      alert("File size exceeds 25 MB. Please upload a smaller image.");
       return;
     }
 
@@ -86,9 +95,14 @@ export default function ManageTeam() {
       formData.append('description', description);
       formData.append('is_active', isActive);
       formData.append('display_order', displayOrder);
+      
       if (imageFile) {
-        formData.append('image', imageFile);
+        setUploadStatus("Optimizing photo...");
+        const optimizedFile = await optimizeImage(imageFile, { maxWidth: 1200, maxHeight: 1200 });
+        formData.append('image', optimizedFile);
       }
+
+      setUploadStatus(isEditing ? "Updating member..." : "Adding member...");
 
       const url = isEditing ? `/api/admin/team/${currentId}` : '/api/admin/team';
       const method = isEditing ? 'PUT' : 'POST';
@@ -98,11 +112,7 @@ export default function ManageTeam() {
         body: formData,
       });
 
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to save team member');
-      }
+      await safeFetchJson(response, 'Failed to save team member');
 
       resetForm();
       fetchTeamMembers();
@@ -111,6 +121,7 @@ export default function ManageTeam() {
       alert("Error saving team member: " + error.message);
     } finally {
       setIsUploading(false);
+      setUploadStatus("");
     }
   };
 
@@ -246,6 +257,7 @@ export default function ManageTeam() {
               Photo {isEditing ? '(Leave empty to keep current photo)' : '*'}
             </label>
             <input 
+              ref={fileInputRef}
               type="file" 
               accept="image/*" 
               onChange={(e) => setImageFile(e.target.files[0])} 
@@ -258,7 +270,7 @@ export default function ManageTeam() {
             disabled={isUploading}
             className="bg-primary text-white px-6 py-2 rounded font-medium hover:bg-primary/90 disabled:opacity-50"
           >
-            {isUploading ? "Saving..." : (isEditing ? "Save Changes" : "Add Team Member")}
+            {isUploading ? (uploadStatus || "Saving...") : (isEditing ? "Save Changes" : "Add Team Member")}
           </button>
         </form>
       </div>

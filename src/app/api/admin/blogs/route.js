@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabaseAdmin';
 
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
+
 export async function POST(request) {
   try {
     const formData = await request.formData();
@@ -16,13 +19,18 @@ export async function POST(request) {
     }
 
     // 1. Upload to storage using Admin key (bypasses RLS)
-    const fileExt = imageFile.name.split('.').pop();
-    const fileName = `${Math.random()}.${fileExt}`;
+    const fileExt = imageFile.name ? imageFile.name.split('.').pop() : 'jpg';
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
     const filePath = `blogs/${fileName}`;
+
+    const buffer = Buffer.from(await imageFile.arrayBuffer());
 
     const { error: uploadError } = await supabaseAdmin.storage
       .from('images')
-      .upload(filePath, imageFile);
+      .upload(filePath, buffer, {
+        contentType: imageFile.type || 'image/jpeg',
+        upsert: true
+      });
 
     if (uploadError) {
       console.error("Storage error:", uploadError);

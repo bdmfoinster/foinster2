@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
+import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
 
 export default function ManageProjects() {
   const [projects, setProjects] = useState([]);
@@ -10,7 +11,9 @@ export default function ManageProjects() {
   const [category, setCategory] = useState("Residential");
   const [imageFile, setImageFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState("");
   const [editingId, setEditingId] = useState(null);
+  const fileInputRef = useRef(null);
 
   const checkUser = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -39,9 +42,8 @@ export default function ManageProjects() {
       return;
     }
 
-    // Enforce 10 MB limit
-    if (imageFile && imageFile.size > 10 * 1024 * 1024) {
-      alert("File size exceeds 10 MB. Please upload a smaller image.");
+    if (imageFile && imageFile.size > 25 * 1024 * 1024) {
+      alert("File size exceeds 25 MB. Please upload a smaller image.");
       return;
     }
 
@@ -51,9 +53,14 @@ export default function ManageProjects() {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('category', category);
+
       if (imageFile) {
-        formData.append('file', imageFile);
+        setUploadStatus("Optimizing image...");
+        const optimizedFile = await optimizeImage(imageFile);
+        formData.append('file', optimizedFile);
       }
+
+      setUploadStatus(editingId ? "Updating project..." : "Uploading project...");
 
       const url = editingId ? `/api/admin/projects/${editingId}` : '/api/admin/projects';
       const method = editingId ? 'PUT' : 'POST';
@@ -63,11 +70,7 @@ export default function ManageProjects() {
         body: formData,
       });
 
-      const result = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to save project');
-      }
+      await safeFetchJson(response, editingId ? 'Failed to update project' : 'Failed to save project');
 
       resetForm();
       fetchProjects();
@@ -76,6 +79,7 @@ export default function ManageProjects() {
       alert("Error saving project: " + error.message);
     } finally {
       setIsUploading(false);
+      setUploadStatus("");
     }
   };
 
@@ -84,6 +88,9 @@ export default function ManageProjects() {
     setCategory("Residential");
     setImageFile(null);
     setEditingId(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleEditClick = (project) => {
@@ -143,6 +150,7 @@ export default function ManageProjects() {
           <div>
             <label className="block text-sm font-medium mb-1">{editingId ? "Change Project Image (Leave blank to keep current)" : "Project Image File *"}</label>
             <input 
+              ref={fileInputRef}
               type="file" 
               accept="image/*"
               required={!editingId}
@@ -151,7 +159,7 @@ export default function ManageProjects() {
             />
           </div>
           <button type="submit" disabled={isUploading} className="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary/90 disabled:opacity-50">
-            {isUploading ? "Uploading & Saving..." : (editingId ? "Save Changes" : "Add Project")}
+            {isUploading ? (uploadStatus || "Saving...") : (editingId ? "Save Changes" : "Add Project")}
           </button>
         </form>
       </div>

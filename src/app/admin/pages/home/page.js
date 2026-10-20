@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
 
 export default function ManageHomePage() {
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [savingStatus, setSavingStatus] = useState("");
   
   const [formData, setFormData] = useState({
     hero_title: "",
@@ -148,6 +150,7 @@ export default function ManageHomePage() {
   const handleSave = async (e) => {
     e.preventDefault();
     setIsSaving(true);
+    setSavingStatus("Optimizing images...");
     
     try {
       const payload = new FormData();
@@ -169,23 +172,35 @@ export default function ManageHomePage() {
         featured_projects: fpDataToSave
       }));
       
-      if (heroImage) payload.append("hero_image", heroImage);
-      if (aboutImage) payload.append("about_image", aboutImage);
-      if (contactBgImage) payload.append("contact_bg_image", contactBgImage);
+      if (heroImage) {
+        const optHero = await optimizeImage(heroImage);
+        payload.append("hero_image", optHero);
+      }
+      if (aboutImage) {
+        const optAbout = await optimizeImage(aboutImage);
+        payload.append("about_image", optAbout);
+      }
+      if (contactBgImage) {
+        const optContact = await optimizeImage(contactBgImage);
+        payload.append("contact_bg_image", optContact);
+      }
       
-      featuredProjects.forEach((fp, index) => {
+      for (let index = 0; index < featuredProjects.length; index++) {
+        const fp = featuredProjects[index];
         if (fp.file) {
-          payload.append(`featured_project_image_${index}`, fp.file);
+          const optFp = await optimizeImage(fp.file);
+          payload.append(`featured_project_image_${index}`, optFp);
         }
-      });
+      }
+      
+      setSavingStatus("Uploading and saving...");
       
       const response = await fetch("/api/admin/homepage", {
         method: "POST",
         body: payload
       });
       
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error || "Failed to save");
+      await safeFetchJson(response, "Failed to save homepage content");
       
       alert("Home Page Content Updated!");
       fetchContent();
@@ -193,6 +208,7 @@ export default function ManageHomePage() {
       alert("Error: " + error.message);
     } finally {
       setIsSaving(false);
+      setSavingStatus("");
     }
   };
 
@@ -440,7 +456,7 @@ export default function ManageHomePage() {
         </div>
 
         <button type="submit" disabled={isSaving} className="bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 disabled:opacity-50 text-lg w-full font-semibold">
-          {isSaving ? "Saving..." : "Save Home Page Content"}
+          {isSaving ? (savingStatus || "Saving...") : "Save Home Page Content"}
         </button>
 
       </form>
