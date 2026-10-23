@@ -7,54 +7,72 @@ export const maxDuration = 60;
 export async function PUT(request, { params }) {
   try {
     const { id } = await params;
-    const formData = await request.formData();
-    
-    // Check if it's a reorder action or status toggle which might send limited data
-    const isReorder = formData.has('action') && formData.get('action') === 'reorder';
-    
-    if (isReorder) {
-      const updates = JSON.parse(formData.get('updates'));
-      // updates is an array of { id, display_order }
-      for (const update of updates) {
-        await supabaseAdmin
-          .from('team_members')
-          .update({ display_order: update.display_order })
-          .eq('id', update.id);
+    const contentType = request.headers.get('content-type') || '';
+    let updateData = {};
+
+    if (contentType.includes('application/json')) {
+      const json = await request.json();
+      
+      if (json.action === 'reorder' && json.updates) {
+        for (const update of json.updates) {
+          await supabaseAdmin
+            .from('team_members')
+            .update({ display_order: update.display_order })
+            .eq('id', update.id);
+        }
+        return NextResponse.json({ success: true });
       }
-      return NextResponse.json({ success: true });
-    }
 
-    const name = formData.get('name');
-    const role = formData.get('role');
-    const description = formData.get('description') || null;
-    const is_active = formData.get('is_active') === 'true';
-    const display_order = parseInt(formData.get('display_order') || '0', 10);
-    const imageFile = formData.get('image'); 
+      if (json.name !== undefined) updateData.name = json.name;
+      if (json.role !== undefined) updateData.role = json.role;
+      if (json.description !== undefined) updateData.description = json.description;
+      if (json.is_active !== undefined) updateData.is_active = Boolean(json.is_active);
+      if (json.display_order !== undefined) updateData.display_order = parseInt(json.display_order, 10);
+      if (json.image) updateData.image = json.image;
 
-    const updateData = {
-      name,
-      role,
-      description,
-      is_active,
-      display_order
-    };
+    } else {
+      const formData = await request.formData();
+      const isReorder = formData.has('action') && formData.get('action') === 'reorder';
+      
+      if (isReorder) {
+        const updates = JSON.parse(formData.get('updates'));
+        for (const update of updates) {
+          await supabaseAdmin
+            .from('team_members')
+            .update({ display_order: update.display_order })
+            .eq('id', update.id);
+        }
+        return NextResponse.json({ success: true });
+      }
 
-    if (imageFile && imageFile instanceof File) {
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const buffer = Buffer.from(await imageFile.arrayBuffer());
+      const name = formData.get('name');
+      const role = formData.get('role');
+      const description = formData.get('description') || null;
+      const is_active = formData.get('is_active') === 'true';
+      const display_order = parseInt(formData.get('display_order') || '0', 10);
+      const imageFile = formData.get('image');
+      const imageUrl = formData.get('image_url');
 
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from('team')
-        .upload(fileName, buffer, {
-          contentType: imageFile.type,
-          upsert: true
-        });
+      updateData = { name, role, description, is_active, display_order };
+      if (imageUrl) updateData.image = imageUrl;
 
-      if (uploadError) throw uploadError;
+      if (!imageUrl && imageFile && imageFile instanceof File) {
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const buffer = Buffer.from(await imageFile.arrayBuffer());
 
-      const { data: urlData } = supabaseAdmin.storage.from('team').getPublicUrl(fileName);
-      updateData.image = urlData.publicUrl;
+        const { error: uploadError } = await supabaseAdmin.storage
+          .from('team')
+          .upload(fileName, buffer, {
+            contentType: imageFile.type,
+            upsert: true
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabaseAdmin.storage.from('team').getPublicUrl(fileName);
+        updateData.image = urlData.publicUrl;
+      }
     }
 
     const { data, error } = await supabaseAdmin

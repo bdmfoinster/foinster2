@@ -21,34 +21,48 @@ export async function GET() {
 
 export async function POST(request) {
   try {
-    const formData = await request.formData();
-    const name = formData.get('name');
-    const role = formData.get('role');
-    const description = formData.get('description') || null;
-    const is_active = formData.get('is_active') === 'true';
-    const display_order = parseInt(formData.get('display_order') || '0', 10);
-    const imageFile = formData.get('image'); // File object
+    const contentType = request.headers.get('content-type') || '';
+    let name, role, description, is_active, display_order, imageUrl;
 
-    let imageUrl = '';
-
-    if (imageFile && imageFile instanceof File) {
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const buffer = Buffer.from(await imageFile.arrayBuffer());
-
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from('team')
-        .upload(fileName, buffer, {
-          contentType: imageFile.type,
-          upsert: true
-        });
-
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabaseAdmin.storage.from('team').getPublicUrl(fileName);
-      imageUrl = urlData.publicUrl;
+    if (contentType.includes('application/json')) {
+      const json = await request.json();
+      name = json.name;
+      role = json.role;
+      description = json.description || null;
+      is_active = json.is_active !== undefined ? Boolean(json.is_active) : true;
+      display_order = parseInt(json.display_order || '0', 10);
+      imageUrl = json.image;
     } else {
-      return NextResponse.json({ error: 'Image is required' }, { status: 400 });
+      const formData = await request.formData();
+      name = formData.get('name');
+      role = formData.get('role');
+      description = formData.get('description') || null;
+      is_active = formData.get('is_active') === 'true';
+      display_order = parseInt(formData.get('display_order') || '0', 10);
+      imageUrl = formData.get('image_url') || '';
+      const imageFile = formData.get('image');
+
+      if (!imageUrl && imageFile && imageFile instanceof File) {
+        const fileExt = imageFile.name ? imageFile.name.split('.').pop() : 'jpg';
+        const fileName = `${Date.now()}_${Math.random().toString(36).substring(2)}.${fileExt}`;
+        const buffer = Buffer.from(await imageFile.arrayBuffer());
+
+        const { error: uploadError } = await supabaseAdmin.storage
+          .from('team')
+          .upload(fileName, buffer, {
+            contentType: imageFile.type || 'image/jpeg',
+            upsert: true
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabaseAdmin.storage.from('team').getPublicUrl(fileName);
+        imageUrl = urlData.publicUrl;
+      }
+    }
+
+    if (!name || !role || !imageUrl) {
+      return NextResponse.json({ error: 'Name, role, and image are required' }, { status: 400 });
     }
 
     const { data, error } = await supabaseAdmin.from('team_members').insert([{

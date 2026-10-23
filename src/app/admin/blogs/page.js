@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
-import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
+import { safeFetchJson } from "@/lib/imageOptimizer";
+import { uploadDirectToStorage } from "@/lib/directUploader";
 
 export default function ManageBlogs() {
   const [blogs, setBlogs] = useState([]);
@@ -44,29 +45,24 @@ export default function ManageBlogs() {
       return;
     }
 
-    if (imageFile.size > 25 * 1024 * 1024) {
-      alert("File size exceeds 25 MB. Please upload a smaller image.");
-      return;
-    }
-
     setIsUploading(true);
 
     try {
-      setUploadStatus("Optimizing image...");
-      const optimizedFile = await optimizeImage(imageFile);
+      setUploadStatus("Uploading image to storage...");
+      const imageUrl = await uploadDirectToStorage(imageFile, { bucket: 'images', folder: 'blogs' });
 
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('excerpt', excerpt);
-      formData.append('content', content);
-      formData.append('date', date);
-      formData.append('file', optimizedFile);
-
-      setUploadStatus("Uploading blog post...");
+      setUploadStatus("Publishing blog post...");
 
       const response = await fetch('/api/admin/blogs', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          excerpt,
+          content,
+          date,
+          image_url: imageUrl
+        }),
       });
 
       await safeFetchJson(response, 'Failed to save blog');

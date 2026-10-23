@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
+import { safeFetchJson } from "@/lib/imageOptimizer";
+import { uploadDirectToStorage } from "@/lib/directUploader";
 
 export default function ManageHomePage() {
   const [loading, setLoading] = useState(true);
@@ -150,54 +151,60 @@ export default function ManageHomePage() {
   const handleSave = async (e) => {
     e.preventDefault();
     setIsSaving(true);
-    setSavingStatus("Optimizing images...");
+    setSavingStatus("Uploading images directly to storage...");
     
     try {
-      const payload = new FormData();
-      Object.keys(formData).forEach(key => {
-        payload.append(key, formData[key]);
-      });
-      
-      payload.append("hero_stats", JSON.stringify(heroStats));
-      payload.append("services", JSON.stringify(services));
-      
-      const fpDataToSave = featuredProjects.map(fp => ({
-        title: fp.title,
-        category: fp.category,
-        image_url: fp.image_url
-      }));
-      
-      payload.append("extended_settings", JSON.stringify({
-        ...extendedSettings,
-        featured_projects: fpDataToSave
-      }));
-      
+      let heroImageUrl = formData.hero_image_url_existing;
       if (heroImage) {
-        const optHero = await optimizeImage(heroImage);
-        payload.append("hero_image", optHero);
+        setSavingStatus("Uploading hero image...");
+        heroImageUrl = await uploadDirectToStorage(heroImage, { bucket: 'images', folder: 'homepage' });
       }
+
+      let aboutImageUrl = formData.about_image_url_existing;
       if (aboutImage) {
-        const optAbout = await optimizeImage(aboutImage);
-        payload.append("about_image", optAbout);
+        setSavingStatus("Uploading about image...");
+        aboutImageUrl = await uploadDirectToStorage(aboutImage, { bucket: 'images', folder: 'homepage' });
       }
+
+      const updatedExtendedSettings = { ...extendedSettings };
       if (contactBgImage) {
-        const optContact = await optimizeImage(contactBgImage);
-        payload.append("contact_bg_image", optContact);
+        setSavingStatus("Uploading watermark image...");
+        const contactBgUrl = await uploadDirectToStorage(contactBgImage, { bucket: 'images', folder: 'homepage' });
+        updatedExtendedSettings.contactBgImage = contactBgUrl;
       }
-      
+
+      const fpDataToSave = [];
       for (let index = 0; index < featuredProjects.length; index++) {
         const fp = featuredProjects[index];
+        let imgUrl = fp.image_url;
         if (fp.file) {
-          const optFp = await optimizeImage(fp.file);
-          payload.append(`featured_project_image_${index}`, optFp);
+          setSavingStatus(`Uploading project image ${index + 1}...`);
+          imgUrl = await uploadDirectToStorage(fp.file, { bucket: 'images', folder: 'homepage' });
         }
+        fpDataToSave.push({
+          title: fp.title,
+          category: fp.category,
+          image_url: imgUrl
+        });
       }
-      
-      setSavingStatus("Uploading and saving...");
-      
+
+      updatedExtendedSettings.featured_projects = fpDataToSave;
+
+      setSavingStatus("Saving homepage content...");
+
+      const payload = {
+        ...formData,
+        hero_image_url: heroImageUrl,
+        about_image_url: aboutImageUrl,
+        hero_stats: heroStats,
+        services: services,
+        extended_settings: updatedExtendedSettings
+      };
+
       const response = await fetch("/api/admin/homepage", {
         method: "POST",
-        body: payload
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
       
       await safeFetchJson(response, "Failed to save homepage content");

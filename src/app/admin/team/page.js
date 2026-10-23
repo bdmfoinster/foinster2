@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
-import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
+import { safeFetchJson } from "@/lib/imageOptimizer";
+import { uploadDirectToStorage } from "@/lib/directUploader";
 
 export default function ManageTeam() {
   const [teamMembers, setTeamMembers] = useState([]);
@@ -81,25 +82,14 @@ export default function ManageTeam() {
       return;
     }
 
-    if (imageFile && imageFile.size > 25 * 1024 * 1024) {
-      alert("File size exceeds 25 MB. Please upload a smaller image.");
-      return;
-    }
-
     setIsUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('role', role);
-      formData.append('description', description);
-      formData.append('is_active', isActive);
-      formData.append('display_order', displayOrder);
+      let imageUrl = null;
       
       if (imageFile) {
-        setUploadStatus("Optimizing photo...");
-        const optimizedFile = await optimizeImage(imageFile, { maxWidth: 1200, maxHeight: 1200 });
-        formData.append('image', optimizedFile);
+        setUploadStatus("Uploading photo to storage...");
+        imageUrl = await uploadDirectToStorage(imageFile, { bucket: 'team', folder: '' });
       }
 
       setUploadStatus(isEditing ? "Updating member..." : "Adding member...");
@@ -107,9 +97,19 @@ export default function ManageTeam() {
       const url = isEditing ? `/api/admin/team/${currentId}` : '/api/admin/team';
       const method = isEditing ? 'PUT' : 'POST';
 
+      const payload = {
+        name,
+        role,
+        description,
+        is_active: isActive,
+        display_order: displayOrder,
+        ...(imageUrl ? { image: imageUrl } : {})
+      };
+
       const response = await fetch(url, {
         method,
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
       await safeFetchJson(response, 'Failed to save team member');

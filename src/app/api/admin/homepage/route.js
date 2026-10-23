@@ -6,141 +6,146 @@ export const maxDuration = 60;
 
 export async function POST(request) {
   try {
-    const formData = await request.formData();
-    
-    // Parse form data
-    const heroTitle = formData.get('hero_title');
-    const heroDescription = formData.get('hero_description');
-    const heroStatsStr = formData.get('hero_stats'); // JSON string
-    const aboutTitle = formData.get('about_title');
-    const aboutDescription = formData.get('about_description');
-    const aboutVisionTitle = formData.get('about_vision_title');
-    const aboutVisionDesc = formData.get('about_vision_desc');
-    const servicesStr = formData.get('services'); // JSON string
-    const contactTitle = formData.get('contact_title');
-    const contactDescription = formData.get('contact_description');
-    const contactPhone = formData.get('contact_phone');
-    
-    let heroImageUrl = formData.get('hero_image_url_existing');
-    let aboutImageUrl = formData.get('about_image_url_existing');
+    const contentType = request.headers.get('content-type') || '';
+    let payload;
 
-    const heroImageFile = formData.get('hero_image');
-    const aboutImageFile = formData.get('about_image');
-    
-    // NEW: Handle extended settings
-    let extendedSettings = {};
-    const extendedSettingsStr = formData.get('extended_settings');
-    try { if (extendedSettingsStr) extendedSettings = JSON.parse(extendedSettingsStr); } catch (e) {}
-    
-    const contactBgImageFile = formData.get('contact_bg_image');
+    if (contentType.includes('application/json')) {
+      payload = await request.json();
+    } else {
+      const formData = await request.formData();
+      
+      const heroTitle = formData.get('hero_title');
+      const heroDescription = formData.get('hero_description');
+      const heroStatsStr = formData.get('hero_stats'); // JSON string
+      const aboutTitle = formData.get('about_title');
+      const aboutDescription = formData.get('about_description');
+      const aboutVisionTitle = formData.get('about_vision_title');
+      const aboutVisionDesc = formData.get('about_vision_desc');
+      const servicesStr = formData.get('services'); // JSON string
+      const contactTitle = formData.get('contact_title');
+      const contactDescription = formData.get('contact_description');
+      const contactPhone = formData.get('contact_phone');
+      
+      let heroImageUrl = formData.get('hero_image_url_existing');
+      let aboutImageUrl = formData.get('about_image_url_existing');
 
-    // Upload hero image if new file is provided
-    if (heroImageFile && typeof heroImageFile !== 'string') {
-      const fileExt = heroImageFile.name ? heroImageFile.name.split('.').pop() : 'jpg';
-      const fileName = `hero_${Date.now()}.${fileExt}`;
-      const buffer = Buffer.from(await heroImageFile.arrayBuffer());
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from('images')
-        .upload(`homepage/${fileName}`, buffer, {
-          contentType: heroImageFile.type || 'image/jpeg',
-          upsert: true
-        });
-        
-      if (!uploadError) {
-        const { data: { publicUrl } } = supabaseAdmin.storage
-          .from('images')
-          .getPublicUrl(`homepage/${fileName}`);
-        heroImageUrl = publicUrl;
-      }
-    }
+      const heroImageFile = formData.get('hero_image');
+      const aboutImageFile = formData.get('about_image');
+      
+      let extendedSettings = {};
+      const extendedSettingsStr = formData.get('extended_settings');
+      try { if (extendedSettingsStr) extendedSettings = JSON.parse(extendedSettingsStr); } catch (e) {}
+      
+      const contactBgImageFile = formData.get('contact_bg_image');
 
-    // Upload about image if new file is provided
-    if (aboutImageFile && typeof aboutImageFile !== 'string') {
-      const fileExt = aboutImageFile.name ? aboutImageFile.name.split('.').pop() : 'jpg';
-      const fileName = `about_${Date.now()}.${fileExt}`;
-      const buffer = Buffer.from(await aboutImageFile.arrayBuffer());
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from('images')
-        .upload(`homepage/${fileName}`, buffer, {
-          contentType: aboutImageFile.type || 'image/jpeg',
-          upsert: true
-        });
-        
-      if (!uploadError) {
-        const { data: { publicUrl } } = supabaseAdmin.storage
+      // Upload hero image if new file is provided
+      if (heroImageFile && typeof heroImageFile !== 'string') {
+        const fileExt = heroImageFile.name ? heroImageFile.name.split('.').pop() : 'jpg';
+        const fileName = `hero_${Date.now()}.${fileExt}`;
+        const buffer = Buffer.from(await heroImageFile.arrayBuffer());
+        const { error: uploadError } = await supabaseAdmin.storage
           .from('images')
-          .getPublicUrl(`homepage/${fileName}`);
-        aboutImageUrl = publicUrl;
-      }
-    }
-    
-    // Upload contact background image if new file is provided
-    if (contactBgImageFile && typeof contactBgImageFile !== 'string') {
-      const fileExt = contactBgImageFile.name ? contactBgImageFile.name.split('.').pop() : 'jpg';
-      const fileName = `contact_bg_${Date.now()}.${fileExt}`;
-      const buffer = Buffer.from(await contactBgImageFile.arrayBuffer());
-      const { error: uploadError } = await supabaseAdmin.storage
-        .from('images')
-        .upload(`homepage/${fileName}`, buffer, {
-          contentType: contactBgImageFile.type || 'image/jpeg',
-          upsert: true
-        });
-        
-      if (!uploadError) {
-        const { data: { publicUrl } } = supabaseAdmin.storage
-          .from('images')
-          .getPublicUrl(`homepage/${fileName}`);
-        extendedSettings.contactBgImage = publicUrl;
-      }
-    }
-    
-    // Upload featured project images
-    if (extendedSettings.featured_projects && Array.isArray(extendedSettings.featured_projects)) {
-      for (let i = 0; i < extendedSettings.featured_projects.length; i++) {
-        const fpFile = formData.get(`featured_project_image_${i}`);
-        if (fpFile && typeof fpFile !== 'string') {
-          const fileExt = fpFile.name ? fpFile.name.split('.').pop() : 'jpg';
-          const fileName = `featured_project_${Date.now()}_${i}.${fileExt}`;
-          const buffer = Buffer.from(await fpFile.arrayBuffer());
-          const { error: uploadError } = await supabaseAdmin.storage
+          .upload(`homepage/${fileName}`, buffer, {
+            contentType: heroImageFile.type || 'image/jpeg',
+            upsert: true
+          });
+          
+        if (!uploadError) {
+          const { data: { publicUrl } } = supabaseAdmin.storage
             .from('images')
-            .upload(`homepage/${fileName}`, buffer, {
-              contentType: fpFile.type || 'image/jpeg',
-              upsert: true
-            });
-            
-          if (!uploadError) {
-            const { data: { publicUrl } } = supabaseAdmin.storage
+            .getPublicUrl(`homepage/${fileName}`);
+          heroImageUrl = publicUrl;
+        }
+      }
+
+      // Upload about image if new file is provided
+      if (aboutImageFile && typeof aboutImageFile !== 'string') {
+        const fileExt = aboutImageFile.name ? aboutImageFile.name.split('.').pop() : 'jpg';
+        const fileName = `about_${Date.now()}.${fileExt}`;
+        const buffer = Buffer.from(await aboutImageFile.arrayBuffer());
+        const { error: uploadError } = await supabaseAdmin.storage
+          .from('images')
+          .upload(`homepage/${fileName}`, buffer, {
+            contentType: aboutImageFile.type || 'image/jpeg',
+            upsert: true
+          });
+          
+        if (!uploadError) {
+          const { data: { publicUrl } } = supabaseAdmin.storage
+            .from('images')
+            .getPublicUrl(`homepage/${fileName}`);
+          aboutImageUrl = publicUrl;
+        }
+      }
+      
+      // Upload contact background image if new file is provided
+      if (contactBgImageFile && typeof contactBgImageFile !== 'string') {
+        const fileExt = contactBgImageFile.name ? contactBgImageFile.name.split('.').pop() : 'jpg';
+        const fileName = `contact_bg_${Date.now()}.${fileExt}`;
+        const buffer = Buffer.from(await contactBgImageFile.arrayBuffer());
+        const { error: uploadError } = await supabaseAdmin.storage
+          .from('images')
+          .upload(`homepage/${fileName}`, buffer, {
+            contentType: contactBgImageFile.type || 'image/jpeg',
+            upsert: true
+          });
+          
+        if (!uploadError) {
+          const { data: { publicUrl } } = supabaseAdmin.storage
+            .from('images')
+            .getPublicUrl(`homepage/${fileName}`);
+          extendedSettings.contactBgImage = publicUrl;
+        }
+      }
+      
+      // Upload featured project images
+      if (extendedSettings.featured_projects && Array.isArray(extendedSettings.featured_projects)) {
+        for (let i = 0; i < extendedSettings.featured_projects.length; i++) {
+          const fpFile = formData.get(`featured_project_image_${i}`);
+          if (fpFile && typeof fpFile !== 'string') {
+            const fileExt = fpFile.name ? fpFile.name.split('.').pop() : 'jpg';
+            const fileName = `featured_project_${Date.now()}_${i}.${fileExt}`;
+            const buffer = Buffer.from(await fpFile.arrayBuffer());
+            const { error: uploadError } = await supabaseAdmin.storage
               .from('images')
-              .getPublicUrl(`homepage/${fileName}`);
-            extendedSettings.featured_projects[i].image_url = publicUrl;
+              .upload(`homepage/${fileName}`, buffer, {
+                contentType: fpFile.type || 'image/jpeg',
+                upsert: true
+              });
+              
+            if (!uploadError) {
+              const { data: { publicUrl } } = supabaseAdmin.storage
+                .from('images')
+                .getPublicUrl(`homepage/${fileName}`);
+              extendedSettings.featured_projects[i].image_url = publicUrl;
+            }
           }
         }
       }
+      
+      let heroStats = [];
+      try { if (heroStatsStr) heroStats = JSON.parse(heroStatsStr); } catch (e) {}
+
+      let services = [];
+      try { if (servicesStr) services = JSON.parse(servicesStr); } catch (e) {}
+
+      payload = {
+        hero_title: heroTitle,
+        hero_description: heroDescription,
+        hero_stats: heroStats,
+        about_title: aboutTitle,
+        about_description: aboutDescription,
+        about_vision_title: aboutVisionTitle,
+        about_vision_desc: aboutVisionDesc,
+        hero_image_url: heroImageUrl,
+        about_image_url: aboutImageUrl,
+        services: services,
+        contact_title: contactTitle,
+        contact_description: contactDescription,
+        contact_phone: contactPhone,
+        extended_settings: extendedSettings
+      };
     }
-    
-    let heroStats = [];
-    try { if (heroStatsStr) heroStats = JSON.parse(heroStatsStr); } catch (e) {}
-
-    let services = [];
-    try { if (servicesStr) services = JSON.parse(servicesStr); } catch (e) {}
-
-    const payload = {
-      hero_title: heroTitle,
-      hero_description: heroDescription,
-      hero_stats: heroStats,
-      about_title: aboutTitle,
-      about_description: aboutDescription,
-      about_vision_title: aboutVisionTitle,
-      about_vision_desc: aboutVisionDesc,
-      hero_image_url: heroImageUrl,
-      about_image_url: aboutImageUrl,
-      services: services,
-      contact_title: contactTitle,
-      contact_description: contactDescription,
-      contact_phone: contactPhone,
-      extended_settings: extendedSettings
-    };
 
     // Check if row exists
     const { data: existing } = await supabaseAdmin.from('homepage_content').select('id').limit(1).single();

@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
-import { optimizeImage, safeFetchJson } from "@/lib/imageOptimizer";
+import { safeFetchJson } from "@/lib/imageOptimizer";
+import { uploadDirectToStorage } from "@/lib/directUploader";
 
 export default function ManageProjects() {
   const [projects, setProjects] = useState([]);
@@ -42,32 +43,31 @@ export default function ManageProjects() {
       return;
     }
 
-    if (imageFile && imageFile.size > 25 * 1024 * 1024) {
-      alert("File size exceeds 25 MB. Please upload a smaller image.");
-      return;
-    }
-
     setIsUploading(true);
 
     try {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('category', category);
+      let imageUrl = null;
 
       if (imageFile) {
-        setUploadStatus("Optimizing image...");
-        const optimizedFile = await optimizeImage(imageFile);
-        formData.append('file', optimizedFile);
+        setUploadStatus("Uploading image to storage...");
+        imageUrl = await uploadDirectToStorage(imageFile, { bucket: 'images', folder: 'projects' });
       }
 
-      setUploadStatus(editingId ? "Updating project..." : "Uploading project...");
+      setUploadStatus(editingId ? "Updating project..." : "Saving project...");
 
       const url = editingId ? `/api/admin/projects/${editingId}` : '/api/admin/projects';
       const method = editingId ? 'PUT' : 'POST';
 
+      const payload = {
+        title,
+        category,
+        ...(imageUrl ? { image_url: imageUrl } : {})
+      };
+
       const response = await fetch(url, {
         method,
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
       await safeFetchJson(response, editingId ? 'Failed to update project' : 'Failed to save project');
